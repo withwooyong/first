@@ -14,7 +14,7 @@
 			    IDX = #{IDX}
 		]]>
 	</select>
-	
+		
 	<sql id="pagingPre">
 		<![CDATA[
    			SELECT 

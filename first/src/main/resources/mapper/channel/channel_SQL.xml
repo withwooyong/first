@@ -38,7 +38,7 @@
 		 WHERE 1=1
 		   AND CH_CD = #{CH_CD}		
 		]]>
-	</select>
+	</select>	
 	
 	<insert id="insertChannel" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">

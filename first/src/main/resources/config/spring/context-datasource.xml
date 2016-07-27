@@ -9,7 +9,7 @@
         <property name="url" value="jdbc:oracle:thin:@172.18.144.76:1521:TVINGDEV"/>
         <property name="username" value="U_BAK"/>
         <property name="password" value="U_BAK*12345"/>
-    </bean>
+    </bean>    
     
     <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
 		<constructor-arg ref="dataSourceSpied" />

@@ -21,7 +21,7 @@ import first.common.service.CommonService;
 public class CommonController {
 	
 	protected Logger log = LoggerFactory.getLogger(this.getClass());	
-	
+		
 	@Resource(name="commonService")
 	private CommonService commonService;
 	

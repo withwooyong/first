@@ -157,7 +157,7 @@
 		
 		function fn_selectMovieList(frmObj) {	
 			var comAjax = new ComAjax(frmObj);			
- 			comAjax.setUrl("${ctx}/first/movie/lists.do");
+ 			comAjax.setUrl("${ctx}/first/movie/list.do");
  			comAjax.setCallback("fn_selectMovieListCallback");
  			comAjax.ajax();
 		}
