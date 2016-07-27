@@ -2,7 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="movie">
-	
+
+	<select id="lists" parameterType="hashmap" resultType="Movie">
+		SELECT /* movie.lists */
+		       * 
+		  FROM TCM_MOVIE A
+		 WHERE 1=1
+		   AND A.INS_DT > '20160404'
+	</select>
+
 	<select id="list" parameterType="hashmap" resultType="hashmap">
 		SELECT /* movie.list */
                AAA.*
