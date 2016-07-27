@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 30초마다 설정 파일의 변경을 확인한다. 파일이 변경되면 다시 로딩한다 -->
+<configuration scan="true" scanPeriod="30 seconds">
+ 
+    <!-- 외부 설정파일 사용 
+    <property resource="resource.properties"/>
+ 	-->
+ 	
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern> %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+<!--             <pattern>▶ %-5level %d{HH:mm:ss.SSS} [%thread] %logger[%method:%line] - %msg%n</pattern>  -->
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${APP_HOME}/first-webapp.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 파일이 하루에 한개씩 생성된다 -->
+            <fileNamePattern>first-webapp.%d{yyyy-MM-dd}.log</fileNamePattern>
+ 
+            <!-- maxHIstory 설정은 위 부분에 롤링 정책에 따라 적용되 된다고 보면된다.
+             위 설정데로 라면 30일이 지난 파일은 삭제가 된다.-->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+ 
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- class만 따로 지정해서 이 클래스만 로그를 따로 관리할 수 있다. LoginInterceptor class 파일만 따로 로그 관리 -->
+    <appender name="fileForLoginInterceptor" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>d:\testRollingFile.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        
+            <!-- d:\ testRollingFile 2015-04-07-15.log 파일 생성 -->
+            <fileNamePattern>d:\testRollingFile.%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+        
+            <!-- 30시간 지난건 지우겠다. -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>▷ %-5level %d{HH:mm:ss} %logger[%method:%line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+ 
+    <logger name="org.springframework" level="error"/>
+    <logger name="org.apache" level="error"/>
+    <logger name="sun.reflect" level="error"/>
+    
+    <logger name="jdbc.resultset" level="error"/>
+    <logger name="org.hibernate" level="debug"/>
+    <logger name="com.first.webapp" level="debug"/>
+    
+    
+    <!-- Query Loggers -->
+	<logger name="jdbc.sqlonly" additivity="false">  
+    	<level value="debug"/>  
+        <appender-ref ref="console"/>  
+    </logger>
+    
+    <logger name="jdbc.audit" additivity="false">  
+    	<level value="error"/>  
+        <appender-ref ref="console"/>  
+    </logger>
+    
+    <logger name="jdbc.sqltiming" additivity="false">  
+    	<level value="error"/>  
+        <appender-ref ref="console"/>  
+    </logger>
+    
+    <logger name="jdbc.resultsettable" additivity="false">  
+    	<level value="error"/>  
+        <appender-ref ref="console"/>  
+    </logger>
+    
+    <if condition='property("RUN_MODE").equals("SERVICE")'>
+        <then>
+            <!-- 설정파일에 RUN_MODE 가 SERVICE로 정의되어 있으면 로깅 레벨을 INFO로 지정 -->
+            <root level="info">
+                <appender-ref ref="console"/>
+                <appender-ref ref="FILE"/>
+            </root>
+        </then>
+        <!-- 설정파일에 RUN_MODE 가 SERVICE로 정의되어 있지 않으면  로깅 레벨을 DEBUG 지정 -->
+        <else>
+            <root level="debug">
+                <appender-ref ref="console"/>
+                <appender-ref ref="FILE"/>
+            </root>
+        </else>
+    </if>
+    
+    
+	
+    
+    <!-- 이 아래에 있는 애들 다 log로 찍겠다.
+    <logger name="com.first.intercept.LoginInterceptor" level="info">
+        <appender-ref ref="fileForLoginInterceptor"/>
+    </logger>
+     -->
+    <!-- 이 아래에 있는 애들 다 log로 찍겠다. 
+    <logger name="org.springframework" level="info" />
+    <root level="info">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+    </root>
+     -->
+</configuration>

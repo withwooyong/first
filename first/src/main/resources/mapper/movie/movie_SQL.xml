@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="movie">
+	
+	<select id="list" parameterType="hashmap" resultType="hashmap">
+		SELECT /* movie.list */
+               AAA.*
+          FROM (SELECT COUNT(*) OVER() AS TOTAL_COUNT
+                      ,AA.*
+                 FROM (SELECT ROW_NUMBER() OVER (ORDER BY A.INS_DT DESC) RNUM
+                             ,A.MOVIE_CD
+                             ,A.MOVIE_NM
+                             ,A.GENRE_CD
+                             ,A.PRODUCTION
+                             ,A.INS_DT
+                             ,A.DEL_YN 
+                         FROM TCM_MOVIE A
+                        WHERE 1=1
+                        <if test="movie_cd != null and movie_cd != ''">
+                          AND A.MOVIE_CD = #{movie_cd}
+                        </if>  
+                        <if test="movie_nm != null and movie_nm != ''">
+                          AND A.MOVIE_NM LIKE '%'||#{movie_nm}||'%' 	
+                        </if>  
+                          AND A.INS_DT > '20160404' 
+                      ) AA
+               ) AAA
+        WHERE 1=1
+	</select>
+	
+	<select id="detail" parameterType="hashmap" resultType="hashmap">
+		SELECT /* movie.detail */
+               A.MOVIE_CD
+              ,A.MOVIE_NM
+              ,A.GENRE_CD
+              ,A.PRODUCTION
+              ,A.INS_DT
+              ,A.DEL_YN 
+         FROM TCM_MOVIE A
+        WHERE 1=1
+          AND A.MOVIE_CD = #{movie_cd}
+	</select>
+	
+	<insert id="insert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+		/* movie.insert */
+		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
+			SELECT SEQ_TB_BOARD_IDX.NEXTVAL FROM DUAL
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TB_BOARD
+			(
+				IDX,
+			    TITLE, 
+			    CONTENTS, 
+			    HIT_CNT, 
+			    DEL_GB, 
+			    CREA_DTM, 
+			    CREA_ID
+			)
+			VALUES
+			(
+				#{IDX}, 
+				#{TITLE},
+				#{CONTENTS},
+			    0, 
+			    'N', 
+			    SYSDATE, 
+			    'Admin'
+			)
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="hashmap">
+		/* movie.update */
+		UPDATE TCM_MOVIE 
+		   SET MOVIE_NM = #{movie_nm_detail}
+	     WHERE MOVIE_CD = #{movie_cd_detail}
+	</update>
+	
+	<update id="delete" parameterType="hashmap">
+		/* movie.delete */
+		UPDATE TCM_MOVIE 
+		   SET DEL_YN = 'Y'
+	     WHERE MOVIE_CD = #{movie_cd_detail}
+	</update>
+	
+</mapper>
