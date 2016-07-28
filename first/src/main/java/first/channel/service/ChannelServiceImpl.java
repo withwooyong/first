@@ -1,6 +1,5 @@
 package first.channel.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,56 +19,49 @@ public class ChannelServiceImpl implements ChannelService {
 	@Resource(name = "fileUtils")
 	private FileUtils fileUtils;
 
-	@Resource(name = "channelDAO")
-	private ChannelDAO channelDao;
+	@Resource(name = "channelDao")
+	private ChannelDAO dao;
 
 	@Override
-	public List<Map<String, Object>> selectChannelList(Map<String, Object> map) throws Exception {
-		return channelDao.selectChannelList(map);
+	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
+		return dao.list(map);
+	}
+	
+	@Override
+	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
+		return dao.detail(map);
 	}
 
 	@Override
 	public void insertChannel(Map<String, Object> map, HttpServletRequest request) throws Exception {
-		channelDao.insertChannel(map);
+		dao.insertChannel(map);
 
 		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(map, request);
 		for (int i = 0, size = list.size(); i < size; i++) {
-			channelDao.insertFile(list.get(i));
+			dao.insertFile(list.get(i));
 		}
-	}
-
-	@Override
-	public Map<String, Object> selectChannelDetail(Map<String, Object> map) throws Exception {
-		//channelDao.updateHitCnt(map);
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Map<String, Object> tempMap = channelDao.selectChannelDetail(map);
-		resultMap.put("map", tempMap);
-//		List<Map<String, Object>> list = channelDao.selectFileList(map);
-//		resultMap.put("list", list);
-
-		return resultMap;
-	}
+	}	
 
 	@Override
 	public void updateChannel(Map<String, Object> map, HttpServletRequest request) throws Exception {
-		channelDao.updateChannel(map);
+		dao.updateChannel(map);
 
-		channelDao.deleteFileList(map);
+		dao.deleteFileList(map);
 		List<Map<String, Object>> list = fileUtils.parseUpdateFileInfo(map, request);
 		Map<String, Object> tempMap = null;
 		for (int i = 0, size = list.size(); i < size; i++) {
 			tempMap = list.get(i);
 			if (tempMap.get("IS_NEW").equals("Y")) {
-				channelDao.insertFile(tempMap);
+				dao.insertFile(tempMap);
 			} else {
-				channelDao.updateFile(tempMap);
+				dao.updateFile(tempMap);
 			}
 		}
 	}
 
 	@Override
 	public void deleteChannel(Map<String, Object> map) throws Exception {
-		channelDao.deleteChannel(map);
+		dao.deleteChannel(map);
 	}
 
 }

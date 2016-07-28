@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface ChannelService {
 
-	List<Map<String, Object>> selectChannelList(Map<String, Object> map) throws Exception;
+	List<Map<String, Object>> list(Map<String, Object> map) throws Exception;
 
+	Map<String, Object> detail(Map<String, Object> map) throws Exception;
+	
 	void insertChannel(Map<String, Object> map, HttpServletRequest request) throws Exception;
-
-	Map<String, Object> selectChannelDetail(Map<String, Object> map) throws Exception;
 
 	void updateChannel(Map<String, Object> map, HttpServletRequest request) throws Exception;
 

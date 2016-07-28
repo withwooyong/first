@@ -16,8 +16,13 @@ public class ChannelDAO extends AbstractDAO {
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectChannelList(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectPagingList("channel.selectChannelList", map);
+	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("channel.list", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
+		return (Map<String, Object>) selectOne("channel.detail", map);
 	}
 	
 	public void insertChannel(Map<String, Object> map) throws Exception {
@@ -26,12 +31,7 @@ public class ChannelDAO extends AbstractDAO {
 
 	public void updateHitCnt(Map<String, Object> map) throws Exception {
 		update("channel.updateHitCnt", map);
-	}
-
-	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectChannelDetail(Map<String, Object> map) throws Exception {
-		return (Map<String, Object>) selectOne("channel.selectChannelDetail", map);
-	}
+	}	
 
 	public void updateChannel(Map<String, Object> map) throws Exception {
 		update("channel.updateChannel", map);

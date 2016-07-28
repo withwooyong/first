@@ -3,10 +3,10 @@
 
 <mapper namespace="channel">
 	
-	<select id="selectChannelList" parameterType="hashmap" resultType="hashmap">
+	<select id="list" parameterType="hashmap" resultType="hashmap">
 	<include refid="common.pagingPre"/> 
 	<![CDATA[
-		SELECT /* channel.selectChannelList */
+		SELECT /* channel.list */
 		       ROW_NUMBER() OVER (ORDER BY CH_CD DESC) RNUM
 		      ,CH_CD
 		      ,CH_NM
@@ -22,9 +22,9 @@
 	<include refid="common.pagingPost"/> 
 	</select>
 	
-	<select id="selectChannelDetail" parameterType="hashmap" resultType="hashmap">
+	<select id="detail" parameterType="hashmap" resultType="hashmap">
 	<![CDATA[
-		SELECT /* channel.selectChannelDetail */
+		SELECT /* channel.detail */
 			   CH_CD
 		      ,CH_NM
 		      ,CH_KIND_CD
@@ -36,7 +36,7 @@
 		      ,DEL_YN
 		  FROM TCM_CHANNEL
 		 WHERE 1=1
-		   AND CH_CD = #{CH_CD}		
+		   AND CH_CD = #{ch_cd}		
 		]]>
 	</select>	
 	
