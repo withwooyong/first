@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pp">
+	<!--
+	==================================================================
+	  * 설명		: PP 목록 조회
+	  *	기능		: SELECT
+	  *	TABLE	: TCM_PP
+	==================================================================
+	-->
+	<select id="list" parameterType="hashmap" resultType="hashmap" >
+		<include refid="common.pagingPre"/>
+		SELECT /* pp.list */
+		       ROW_NUMBER() OVER (ORDER BY TCP.CORPID DESC) RNUM
+		      ,TCP.CORPID
+		      ,TCP.CD_CUST
+		      ,TCP.KN_CUST
+		      ,TCP.NO_TAX
+		      ,TCP.KN_TRADE
+		      ,TCP.KN_PRESIDENT
+		      ,TCP.KN_BUSINESSCOND
+		      ,TCP.KN_ITEM
+		      ,TCP.CL_CUST
+		      ,TCP.YN_LEGAL
+		      ,CASE WHEN TCP.YN_LEGAL = 'Y' THEN '예' ELSE '아니오' END YN_LEGAL_NM 
+		      ,TCP.NO_POST
+		      ,TCP.KN_ADDRESS||' '||TCP.KN_ADDRESS2 AS KN_ADDRESS
+		      ,TCP.NO_TEL
+		      ,TCP.YN_USE
+		      ,CASE WHEN TCP.YN_USE = 'Y' THEN '예' ELSE '아니오' END YN_USE_NM 
+		      ,TCP.NO_FAX
+		      ,TCP.YN_LEGAL
+		      ,TCP.KN_CUSTEMP
+		      ,TCP.KN_CUSTTEL
+		      ,TCP.E_MAIL
+		      ,TCP.CP_KIND
+		      ,CD.CODE_NAME AS CP_KIND_NM
+		      ,TCP.PARENT_CP
+		      ,MCP.KN_CUST AS MCP_NM
+	  	  FROM TCM_PP TCP
+			  ,(SELECT CORPID, KN_CUST, CP_KIND FROM TCM_PP WHERE CP_KIND = 'CPDS0100' ) MCP
+              ,(SELECT CODE, CODE_NAME
+                  FROM JWORK_CODE
+                 WHERE CODE_GROUP = 'CPDS' ) CD 	  	 
+         WHERE 1=1
+           AND TCP.PARENT_CP = MCP.CORPID(+)
+           AND TCP.CP_KIND = CD.CODE(+)   
+        <if test="s_cd_cust != null and s_cd_cust != ''">
+	       AND TCP.CORPID LIKE '%' || #{s_cd_cust} || '%'
+	    </if>
+	    <if test="search_kn_cust != null and search_kn_cust != ''">
+	       AND TCP.KN_CUST LIKE '%' || #{s_kn_cust} || '%'
+	    </if>	
+		 ORDER BY TCP.CORPID DESC	
+		<include refid="common.pagingPost"/>  
+	</select>
+
+	<!--
+	==================================================================
+	  * 설명		: PP 목록 조회(MCP)
+	  *	기능		: SELECT
+	  *	TABLE	: TCM_PP
+	==================================================================
+	-->
+	<select id="mcp_detail" parameterType="hashmap" resultType="hashmap" >	
+		SELECT /* pp.mcp_detail */
+		       MCP.CORPID
+		      ,MCP.KN_CUST
+		      ,MCP.NO_TAX
+		      ,MCP.KN_TRADE
+		      ,MCP.KN_PRESIDENT
+		      ,MCP.KN_BUSINESSCOND
+		      ,MCP.KN_ITEM
+		      ,MCP.CL_CUST
+		      ,MCP.YN_LEGAL
+		      ,CASE WHEN MCP.YN_LEGAL = 'Y' THEN '예' ELSE '아니오' END YN_LEGAL_NM 
+		      ,MCP.NO_POST
+		      ,MCP.KN_ADDRESS||' '||MCP.KN_ADDRESS2 AS KN_ADDRESS
+		      ,MCP.NO_TEL
+		      ,MCP.YN_USE
+		      ,CASE WHEN MCP.YN_USE = 'Y' THEN '예' ELSE '아니오' END YN_USE_NM 
+		      ,MCP.NO_FAX
+		      ,MCP.YN_LEGAL
+		      ,MCP.KN_CUSTEMP
+		      ,MCP.KN_CUSTTEL
+		      ,MCP.E_MAIL
+		      ,MCP.CP_KIND
+	  	  FROM TCM_PP MCP
+         WHERE MCP.CP_KIND 	= 'CPDS0100' -- MCP
+	 	<if test="s_cd_cust != null and s_cd_cust != ''">
+	       AND MCP.CORPID LIKE '%' || #{s_cd_cust} || '%'
+	    </if>
+	    <if test="s_kn_cust != null and s_kn_cust != ''">
+	       AND UPPER(MCP.KN_CUST )LIKE '%' || UPPER( #{s_kn_cust} ) || '%'
+	    </if>
+		 ORDER BY MCP.CORPID
+	</select>
+	
+	<!--
+	==================================================================
+	  * 설명		: PP 목록 조회 (SCP)
+	  *	기능		: SELECT
+	  *	TABLE	: TCM_PP
+	==================================================================
+	-->
+	<select id="scp_detail" parameterType="java.util.Map" resultType="hashmap" >
+		SELECT /* pp.scp_detail */
+		       SCP.CORPID
+		      ,SCP.CD_CUST
+		      ,SCP.KN_CUST
+		      ,SCP.NO_TAX
+		      ,SCP.KN_TRADE
+		      ,SCP.KN_PRESIDENT
+		      ,SCP.KN_BUSINESSCOND
+		      ,SCP.KN_ITEM
+		      ,SCP.CL_CUST
+		      ,SCP.YN_LEGAL
+		      ,CASE WHEN SCP.YN_LEGAL = 'Y' THEN '예' ELSE '아니오' END YN_LEGAL_NM 
+		      ,SCP.NO_POST
+		      ,SCP.KN_ADDRESS||' '||SCP.KN_ADDRESS2 AS KN_ADDRESS
+		      ,SCP.NO_TEL
+		      ,SCP.YN_USE
+		      ,CASE WHEN SCP.YN_USE = 'Y' THEN '예' ELSE '아니오' END YN_USE_NM 
+		      ,SCP.NO_FAX
+		      ,SCP.YN_LEGAL
+		      ,SCP.KN_CUSTEMP
+		      ,SCP.KN_CUSTTEL
+		      ,SCP.E_MAIL
+		      ,SCP.PARENT_CP
+		      ,SCP.CP_KIND
+	  	  FROM TCM_PP SCP
+         WHERE SCP.PARENT_CP = #{mcp_cd}	
+		 ORDER BY SCP.CORPID
+	</select>	
+	
+	<!--
+	==================================================================
+	  * 설명		: PP의 채널목록 조회
+	  *	기능		: SELECT
+	  *	TABLE	: TCM_CHANNEL
+	==================================================================
+	-->
+	<select id="pp_channel_list" parameterType="java.util.Map" resultType="hashmap" >	
+		SELECT /* pp_channel_list */
+			   TC.CH_CD
+			  ,TC.CH_NM
+			  ,TC.CH_KIND_CD
+			  ,CH_KIND_NM
+			  ,TC.BROAD_KIND_CD
+			  ,BROAD_KIND_NM
+			  ,TC.CH_NO
+			  ,TC.HD_YN
+			  ,CASE WHEN TC.HD_YN = 'Y' THEN '예' ELSE '아니오' END AS HD_YN_NM
+			  ,TO_CHAR(TO_DATE(TC.INS_DT, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AS INS_DT
+		  FROM TCM_CHANNEL TC
+			 ,(SELECT CODE, CODE_NAME AS CH_KIND_NM
+			     FROM JWORK_CODE
+				WHERE CODE_GROUP 	= 'CPCS'
+				  AND USE_YN 		= 'Y'   ) CD1
+			 ,(SELECT CODE, CODE_NAME AS BROAD_KIND_NM
+			     FROM JWORK_CODE
+				WHERE CODE_GROUP 	= 'CPSE'
+				  AND USE_YN 		= 'Y'   ) CD2	  
+		 WHERE TC.DEL_YN 		= 'N'
+		   AND TC.CH_KIND_CD	= CD1.CODE(+)
+		   AND TC.BROAD_KIND_CD	= CD2.CODE(+)
+	<choose>
+		<when test="S_CP_KIND == 'CPDS0100'">			  			   
+	       AND TC.PP_CD 		=  #{pp_cd}
+		</when>
+		<when test="S_CP_KIND == 'CPDS0200'">			  			   
+		   AND TC.SCP_CD 		=  #{pp_cd}
+		</when>
+		<otherwise></otherwise>
+	</choose>
+	</select>
+	
+	<insert id="insert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+		/* movie.insert */
+		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
+			SELECT SEQ_TB_BOARD_IDX.NEXTVAL FROM DUAL
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TB_BOARD
+			(
+				IDX,
+			    TITLE, 
+			    CONTENTS, 
+			    HIT_CNT, 
+			    DEL_GB, 
+			    CREA_DTM, 
+			    CREA_ID
+			)
+			VALUES
+			(
+				#{IDX}, 
+				#{TITLE},
+				#{CONTENTS},
+			    0, 
+			    'N', 
+			    SYSDATE, 
+			    'Admin'
+			)
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="hashmap">
+		/* movie.update */
+		UPDATE TCM_MOVIE 
+		   SET MOVIE_NM = #{movie_nm_detail}
+	     WHERE MOVIE_CD = #{movie_cd_detail}
+	</update>
+	
+	<update id="delete" parameterType="hashmap">
+		/* movie.delete */
+		UPDATE TCM_MOVIE 
+		   SET DEL_YN = 'Y'
+	     WHERE MOVIE_CD = #{movie_cd_detail}
+	</update>
+	
+</mapper>

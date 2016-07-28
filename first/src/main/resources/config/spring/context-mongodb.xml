@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.1.xsd ">
+
+    <mongo:mongo id="mongo" host="#{jdbcConfig['mongodb.host']}" port="#{jdbcConfig['mongodb.port']}" >
+        <mongo:options  connections-per-host="100" threads-allowed-to-block-for-connection-multiplier="80"
+                        connect-timeout="100000" max-wait-time="150000" socket-timeout="150000"
+                        auto-connect-retry="true"  socket-keep-alive="true" slave-ok="true"
+                        write-number="1" write-timeout="0" write-fsync="false" />
+    </mongo:mongo>
+
+    <!-- im_manmager database config -->
+    <mongo:db-factory id="managerMongoDbFactory" dbname="#{jdbcConfig['mongodb.manager.dbname']}"
+                      username="#{jdbcConfig['mongodb.manager.user']}" password="#{jdbcConfig['mongodb.manager.passwd']}"
+                      mongo-ref="mongo" />
+
+<!--     <bean id="managerMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter"> -->
+    <bean id="managerMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter"> 
+        <constructor-arg ref="managerMongoDbFactory" />
+        <constructor-arg ref="mongoMappingContext" />
+        <property name="typeMapper" ref="mongoTypeMapper"></property>
+    </bean>
+
+    <bean id="managerMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="managerMongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="managerMongoConverter" />
+    </bean>
+
+    <!-- im_service database config -->
+    <mongo:db-factory id="serviceMongoDbFactory" dbname="#{jdbcConfig['mongodb.service.dbname']}"
+                      username="#{jdbcConfig['mongodb.service.user']}" password="#{jdbcConfig['mongodb.service.passwd']}"
+                      mongo-ref="mongo" />
+
+    <bean id="serviceMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg ref="serviceMongoDbFactory" />
+        <constructor-arg ref="mongoMappingContext" />
+        <property name="typeMapper" ref="mongoTypeMapper"></property>
+    </bean>
+
+    <bean id="serviceMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="serviceMongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="serviceMongoConverter" />
+    </bean>
+
+    <!-- im_operator database config -->
+    <mongo:db-factory id="operatorMongoDbFactory" dbname="#{jdbcConfig['mongodb.operator.dbname']}"
+                      username="#{jdbcConfig['mongodb.operator.user']}" password="#{jdbcConfig['mongodb.operator.passwd']}"
+                      mongo-ref="mongo" />
+
+    <bean id="operatorMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg ref="operatorMongoDbFactory" />
+        <constructor-arg ref="mongoMappingContext" />
+        <property name="typeMapper" ref="mongoTypeMapper"></property>
+    </bean>
+
+    <bean id="operatorMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="operatorMongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="operatorMongoConverter" />
+    </bean>
+
+    <!-- im_micro database config -->
+    <mongo:db-factory id="microMongoDbFactory" dbname="#{jdbcConfig['mongodb.micro.dbname']}"
+                      username="#{jdbcConfig['mongodb.micro.user']}" password="#{jdbcConfig['mongodb.micro.passwd']}"
+                      mongo-ref="mongo" />
+
+    <bean id="microMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg ref="microMongoDbFactory" />
+        <constructor-arg ref="mongoMappingContext" />
+        <property name="typeMapper" ref="mongoTypeMapper"></property>
+    </bean>
+
+    <bean id="microMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="microMongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="microMongoConverter" />
+    </bean>
+
+    <!-- im_logs database config -->
+    <mongo:db-factory id="logsMongoDbFactory" dbname="#{jdbcConfig['mongodb.logs.dbname']}"
+                      username="#{jdbcConfig['mongodb.logs.user']}" password="#{jdbcConfig['mongodb.logs.passwd']}"
+                      mongo-ref="mongo" />
+
+    <bean id="logsMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg ref="logsMongoDbFactory" />
+        <constructor-arg ref="mongoMappingContext" />
+        <property name="typeMapper" ref="mongoTypeMapper"></property>
+    </bean>
+
+    <bean id="logsMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="logsMongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="logsMongoConverter" />
+    </bean>
+
+    <!-- im_community database config -->
+    <mongo:db-factory id="communityMongoDbFactory" dbname="#{jdbcConfig['mongodb.community.dbname']}"
+                      username="#{jdbcConfig['mongodb.community.user']}" password="#{jdbcConfig['mongodb.community.passwd']}"
+                      mongo-ref="mongo" />
+
+    <bean id="communityMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg ref="communityMongoDbFactory" />
+        <constructor-arg ref="mongoMappingContext" />
+        <property name="typeMapper" ref="mongoTypeMapper"></property>
+    </bean>
+
+    <bean id="communityMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="communityMongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="communityMongoConverter" />
+    </bean>
+
+    <bean id="mongoTypeMapper" class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
+        <constructor-arg name="typeKey"><null/></constructor-arg>
+    </bean>
+
+    <bean id="mongoMappingContext" class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
+
+    <bean class="org.springframework.data.mongodb.core.MongoExceptionTranslator"/>
+
+</beans>
+
+ 
