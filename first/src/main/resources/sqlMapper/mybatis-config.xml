@@ -20,7 +20,7 @@
 	</settings>
 		
 	<typeAliases>
-    	<package name="first.vo" />        
+    	<package name="first.common.vo" />        
 	</typeAliases>
     
 </configuration>

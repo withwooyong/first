@@ -13,6 +13,9 @@
        					http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
        					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
+    <util:properties id="systemConfig" location="classpath:properties/system.properties" />
+	<util:properties id="jdbcConfig"   location="classpath:properties/jdbc.properties" />
+    
     <context:component-scan base-package="first">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>

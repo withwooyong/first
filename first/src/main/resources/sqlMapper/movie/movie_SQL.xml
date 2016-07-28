@@ -12,29 +12,25 @@
 	</select>
 
 	<select id="list" parameterType="hashmap" resultType="hashmap">
-		SELECT /* movie.list */
-               AAA.*
-          FROM (SELECT COUNT(*) OVER() AS TOTAL_COUNT
-                      ,AA.*
-                 FROM (SELECT ROW_NUMBER() OVER (ORDER BY A.INS_DT DESC) RNUM
-                             ,A.MOVIE_CD
-                             ,A.MOVIE_NM
-                             ,A.GENRE_CD
-                             ,A.PRODUCTION
-                             ,A.INS_DT
-                             ,A.DEL_YN 
-                         FROM TCM_MOVIE A
-                        WHERE 1=1
-                        <if test="movie_cd != null and movie_cd != ''">
-                          AND A.MOVIE_CD = #{movie_cd}
-                        </if>  
-                        <if test="movie_nm != null and movie_nm != ''">
-                          AND A.MOVIE_NM LIKE '%'||#{movie_nm}||'%' 	
-                        </if>  
-                          AND A.INS_DT > '20160404' 
-                      ) AA
-               ) AAA
-        WHERE 1=1
+		<include refid="common.pagingPre"/>
+        SELECT /* movie.list */
+               ROW_NUMBER() OVER (ORDER BY A.INS_DT DESC) RNUM
+              ,A.MOVIE_CD
+              ,A.MOVIE_NM
+              ,A.GENRE_CD
+              ,A.PRODUCTION
+              ,A.INS_DT
+              ,A.DEL_YN 
+          FROM TCM_MOVIE A
+         WHERE 1=1
+         <if test="movie_cd != null and movie_cd != ''">
+           AND A.MOVIE_CD = #{movie_cd}
+         </if>  
+         <if test="movie_nm != null and movie_nm != ''">
+           AND A.MOVIE_NM LIKE '%'||#{movie_nm}||'%' 	
+         </if>  
+           AND A.INS_DT > '20160404'
+        <include refid="common.pagingPost"/> 
 	</select>
 	
 	<select id="detail" parameterType="hashmap" resultType="hashmap">

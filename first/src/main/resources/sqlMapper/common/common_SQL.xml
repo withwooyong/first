@@ -16,23 +16,19 @@
 	</select>
 		
 	<sql id="pagingPre">
-		<![CDATA[
-   			SELECT 
-			    AAA.*
-			FROM(
-			    SELECT 
-			        COUNT(*) OVER() AS TOTAL_COUNT,
-			        AA.*
-			    FROM(  
- 		]]>
+		SELECT /* common.pagingPre */ 
+			   AAA.*
+		  FROM (SELECT COUNT(*) OVER() AS TOTAL_COUNT
+		              ,AA.*
+			     FROM (  
  	</sql>
  	
  	<sql id="pagingPost">
- 		<![CDATA[
- 			 	) AA
+ 				) AA
 			) AAA
-			WHERE 
-			    AAA.RNUM BETWEEN #{START} AND #{END}
- 		]]>
+		WHERE 1=1
+		<if test="START != null and START != '' and END != null and END != ''" >
+		  AND AAA.RNUM BETWEEN #{START} AND #{END}
+		</if>
  	</sql>
 </mapper>

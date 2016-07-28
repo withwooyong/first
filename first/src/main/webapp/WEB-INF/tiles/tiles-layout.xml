@@ -21,10 +21,21 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/tiles.jsp" />
 	</definition>
 	
+	<definition name="/pp/*" extends="base-definition">
+		<put-attribute name="body" value="/WEB-INF/jsp/pp/{1}.jsp" />
+	</definition>
 	<definition name="/channel/*" extends="base-definition">
 		<put-attribute name="body" value="/WEB-INF/jsp/channel/{1}.jsp" />
 	</definition>
-	
+	<definition name="/program/*" extends="base-definition">
+		<put-attribute name="body" value="/WEB-INF/jsp/program/{1}.jsp" />
+	</definition>
+	<definition name="/episode/*" extends="base-definition">
+		<put-attribute name="body" value="/WEB-INF/jsp/episode/{1}.jsp" />
+	</definition>
+	<definition name="/clip/*" extends="base-definition">
+		<put-attribute name="body" value="/WEB-INF/jsp/clip/{1}.jsp" />
+	</definition>
 	<definition name="/movie/*" extends="base-definition">
 		<put-attribute name="body" value="/WEB-INF/jsp/movie/{1}.jsp" />
 	</definition>

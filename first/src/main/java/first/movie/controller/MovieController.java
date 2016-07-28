@@ -28,7 +28,7 @@ public class MovieController {
 	@RequestMapping(value = "/movie/main.do")
 	public String movie(CommandMap commandMap) throws Exception {
 		//response.setHeader("cache-control","no-cache,no-store"):
-		return "/movie/list";
+		return "/movie/main";
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class MovieController {
 	@RequestMapping(value="/movie/save.do")
 	public ModelAndView save(CommandMap commandMap, HttpServletRequest request) throws Exception{
 		ModelAndView mv = new ModelAndView("redirect:/movie/main.do");		
-		int msg = (int)service.update(commandMap.getMap(), request);
+		//int msg = (int)service.update(commandMap.getMap(), request);
 		//mv.addObject("success", "success count=" + msg);
 		return mv;
 	}

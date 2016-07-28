@@ -40,9 +40,23 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
-		
+		</repository>		
 	</repositories>
+	
+<!-- 	<profiles> -->
+<!-- 		<profile> -->
+<!-- 			<id>dev</id> -->
+<!-- 			<properties> -->
+<!-- 				<environment>dev</environment> -->
+<!-- 			</properties> -->
+<!-- 		</profile> -->
+<!-- 		<profile> -->
+<!-- 			<id>live</id> -->
+<!-- 			<properties> -->
+<!-- 				<environment>live</environment> -->
+<!-- 			</properties> -->
+<!-- 		</profile> -->
+<!-- 	</profiles>	 -->
 	
 	<dependencies>
 		<!-- Spring -->
@@ -106,6 +120,16 @@
             <artifactId>spring-tx</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
          
         <!-- AOP Alliance -->
         <dependency>
@@ -148,6 +172,25 @@
 <!--             <version>10.2.0.4.0</version> -->
 <!-- 		</dependency> -->
 
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+		<dependency>
+		    <groupId>org.mongodb</groupId>
+		    <artifactId>mongo-java-driver</artifactId>
+		    <version>2.10.1</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 		    <groupId>org.mongodb</groupId> -->
+<!-- 		    <artifactId>mongo-java-driver</artifactId> -->
+<!-- 		    <version>3.3.0</version> -->
+<!-- 		</dependency> -->
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb-parent -->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-mongodb</artifactId>
+		    <version>1.9.2.RELEASE</version>
+		</dependency>
+				
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
