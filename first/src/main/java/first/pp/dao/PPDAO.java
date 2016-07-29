@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import first.common.dao.AbstractDAO;
-import first.common.vo.PP;
 
 @Repository("ppDAO")
 public class PPDAO extends AbstractDAO {
@@ -21,8 +20,8 @@ public class PPDAO extends AbstractDAO {
 	}	
 	
 	@SuppressWarnings("unchecked")
-	public List<PP> lists(Map<String, Object> map) throws Exception {
-		return (List<PP>) selectPagingList("pp.lists", map);
+	public List<Map<String, Object>> lists(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("pp.lists", map);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -23,15 +23,15 @@ function fn_selectMovieListCallback(data) {
 		$.each(data.list, function(key, value) {
 			str += "<tr>"
 					+ "<td id='MOVIE_CD'>" + value.MOVIE_CD + "</td>"
-					+ "<td>" + 
-						"<a href='#this' name='MOVIE_NM'>" + value.MOVIE_NM	+ "</a>" + 
-						"<input type='hidden' id='MOVIE_NM' value=" + value.MOVIE_CD + ">"
-					+ "</td>" + 
-					"<td>" + value.GENRE_CD + "</td>" + 
-					"<td>" + value.PRODUCTION + "</td>" + 
-					"<td>" + value.INS_DT + "</td>" + 
-					"<td>" + value.DEL_YN + "</td>" + 
-					"</tr>";
+					+ "<td>" 
+					+	"<a href='#this' name='MOVIE_NM'>" + value.MOVIE_NM	+ "</a>" 
+					+	"<input type='hidden' id='MOVIE_NM' value=" + value.MOVIE_CD + ">"
+					+ "</td>" 
+					+ "<td>" + value.GENRE_CD + "</td>" 
+					+ "<td>" + value.PRODUCTION + "</td>" 
+					+ "<td>" + value.INS_DT + "</td>" 
+					+ "<td>" + value.DEL_YN + "</td>" 
+					+ "</tr>";
 		});
 		body.append(str);
 

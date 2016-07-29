@@ -1,19 +1,19 @@
 
-function fn_selectMovieList(frmObj) {
+function fn_selectList(frmObj) {
 	var comAjax = new ComAjax(frmObj);			
 	comAjax.setUrl("list.do");
-	comAjax.setCallback("fn_selectMovieListCallback");
+	comAjax.setCallback("fn_selectListCallback");
 	comAjax.ajax();
 }
 
-// 영화리스트
-function fn_selectMovieListCallback(data) {
+// 리스트
+function fn_selectListCallback(data) {
 	var total = data.TOTAL; 
 	
-	$('#movie_list').dataTable().fnDestroy();
-	$('#movie_list tbody').empty();
+	$('#pp_list').dataTable().fnDestroy();
+	$('#pp_list tbody').empty();
 	
-	var body = $('#movie_list tbody');
+	var body = $('#pp_list tbody');
 	if (total == 0) {
 		var str = "<tr>" + "<td colspan='9'>조회된 결과가 없습니다.</td>"
 				+ "</tr>";
@@ -43,8 +43,8 @@ function fn_selectMovieListCallback(data) {
 	$('#movie_list').dataTable();
 }
 
-// 영화상세
-function fn_selectMovieDetail(obj) {			
+// 상세
+function fn_selectDetail(obj) {			
 	var comAjax = new ComAjax();
 	comAjax.setUrl("detail.do");
 	comAjax.addParam("movie_cd", obj.parent().find("#MOVIE_NM").val());

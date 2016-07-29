@@ -19,7 +19,7 @@ public class ChannelServiceImpl implements ChannelService {
 	@Resource(name = "fileUtils")
 	private FileUtils fileUtils;
 
-	@Resource(name = "channelDao")
+	@Resource(name = "channelDAO")
 	private ChannelDAO dao;
 
 	@Override

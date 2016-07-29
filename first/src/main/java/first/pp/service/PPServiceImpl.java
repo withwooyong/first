@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import first.common.util.FileUtils;
-import first.common.vo.PP;
 import first.pp.dao.PPDAO;
 
 @Service("ppService")
@@ -31,7 +30,7 @@ public class PPServiceImpl implements PPService {
 	}
 	
 	@Override
-	public List<PP> lists(Map<String, Object> map) throws Exception {
+	public List<Map<String, Object>> lists(Map<String, Object> map) throws Exception {
 		return dao.lists(map);
 	}
 
