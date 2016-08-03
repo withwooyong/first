@@ -31,3 +31,12 @@
 	    <c:set var="serverDomain" scope="request" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}" />
 	</c:otherwise>
 </c:choose>
+
+<script type="text/javascript">
+	var ctx = '${ctx}';
+	var cacheVersion = '${version}';
+	var imageDomain  = '${imageDomain}';
+	var imageOriginDomain = '${imageOriginDomain}';
+	var publicDomain = '${publicDomain}';
+	var serverDomain = '${serverDomain}';
+</script>	

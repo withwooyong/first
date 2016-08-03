@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,78 +22,53 @@ public class PPController {
 	@Resource(name = "ppService")
 	private PPService service;
 	
-	@RequestMapping(value = "/pp/main.do")
-	public String main(CommandMap commandMap) throws Exception {		
-		return "/pp/main";
+	@RequestMapping(value = "/pp/pp.do")
+	public String pp(CommandMap commandMap) throws Exception {		
+		return "/pp/pp";
 	}
-
+	
 	/**
 	 * 리스트(검색리스트포함)
 	 * 거래처번호, PP사명 
 	 * @param commandMap
 	 * @return
 	 * @throws Exception
-	 */
-	@RequestMapping(value = "/pp/list.do")
-	public ModelAndView list(CommandMap commandMap) throws Exception {
+	 */	
+	@RequestMapping(value = "/pp/mcp_list.do")
+	public ModelAndView mcp_list(CommandMap commandMap) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
-		List<Map<String, Object>> list = service.list(commandMap.getMap());
+		List<Map<String, Object>> list = service.mcp_list(commandMap.getMap());
 		mv.addObject("list", list);
 		return mv;
 	}
 	
-	@RequestMapping(value = "/pp/lists.do")
-	public ModelAndView lists(CommandMap commandMap) throws Exception {
+	@RequestMapping(value = "/pp/scp_list.do")
+	public ModelAndView scp_list(CommandMap commandMap) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
-		List<Map<String, Object>> list = service.lists(commandMap.getMap());
+		List<Map<String, Object>> list = service.scp_list(commandMap.getMap());
 		mv.addObject("list", list);
 		return mv;
 	}
-
+	
 	/**
-	 * 상세
-	 * 
-	 * SCP 리스트
-	 * 거래처번호, 거래처명, 사업자번호, 대표자명, 사용여부
-	 * 
-	 * PP사정보
-	 * 거래처번호, 거래처명
-	 * 사업자번호, 대표자명
-	 * 업태, 종목, 거래처분류
-	 * 우편번호, 주소
-	 * 전화번호, 팩스번호, 사용유무
-	 * 담당자이름, 담당자연락처, 담당자이메일
-	 * 
-	 * PP사 채널목록
-	 * 번호, 채널구분, 방송구분, 채널명, HD, 등록일시
 	 * @param commandMap
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/pp/detail.do")
 	public ModelAndView detail(CommandMap commandMap) throws Exception {
-		ModelAndView mv = new ModelAndView("jsonView");
+		ModelAndView mv = new ModelAndView("jsonView");		
+		// PP사정보
+		Map<String, Object> map = service.detail(commandMap.getMap());
+		List<Map<String, Object>> scp_list = null;
+		if ("CPDS0100".equals(commandMap.getMap().get("s_cp_kind"))) {
+			scp_list = service.scp_list(commandMap.getMap());
+		}
 		
-		
-//		// SCP 리스트
-//		List<Map<String, Object>> list = service.list(commandMap.getMap());
-//		mv.addObject("list", list);
-//		// PP사정보
-//		Map<String, Object> map = service.detail(commandMap.getMap());
-//		mv.addObject("map", map);
-//		// PP사 채널목록
-//		List<Map<String, Object>> list = service.list(commandMap.getMap());
-//		mv.addObject("list", list);
-		
+		List<Map<String, Object>> channel_list = service.channel_list(commandMap.getMap());
+		mv.addObject("map", map);
+		mv.addObject("scp_list", scp_list);
+		mv.addObject("channel_list", channel_list);
 		return mv;
 	}
-		
-	@RequestMapping(value="/pp/save.do")
-	public ModelAndView save(CommandMap commandMap, HttpServletRequest request) throws Exception{
-		ModelAndView mv = new ModelAndView("redirect:/pp/main.do");		
-		//int msg = (int)service.update(commandMap.getMap(), request);
-		//mv.addObject("success", "success count=" + msg);
-		return mv;
-	}
-
 }

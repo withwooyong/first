@@ -15,29 +15,22 @@ public class PPDAO extends AbstractDAO {
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectPagingList("pp.list", map);
-	}	
+	public List<Map<String, Object>> mcp_list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("pp_SQL.mcp_list", map);
+	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> lists(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectPagingList("pp.lists", map);
+	public List<Map<String, Object>> scp_list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("pp_SQL.scp_list", map);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
-		return (Map<String, Object>) selectOne("pp.detail", map);
+		return (Map<String, Object>) selectOne("pp_SQL.detail", map);
 	}
 	
-	public Object insert(Map<String, Object> map) throws Exception{
-		return update("pp.insert", map);
-	}
-	
-	public Object update(Map<String, Object> map) throws Exception{
-		return update("pp.update", map);
-	}
-
-	public Object delete(Map<String, Object> map) throws Exception{
-		return update("pp.delete", map);
-	}
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> channel_list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("pp_SQL.channel_list", map);
+	}	
 }

@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="channel">
+<mapper namespace="channel_SQL">
 	
-	<select id="list" parameterType="hashmap" resultType="hashmap">
-	<include refid="common.pagingPre"/> 
-	<![CDATA[
-		SELECT /* channel.list */
-		       ROW_NUMBER() OVER (ORDER BY CH_CD DESC) RNUM
-		      ,CH_CD
-		      ,CH_NM
-		      ,CH_KIND_CD
-		      ,CH_NO
-		      ,RATIO_CD
-		      ,SORT_NO
-		      ,PAYFREE_YN
-              ,HD_YN
-		      ,DEL_YN 
-		  FROM TCM_CHANNEL
-	]]>
+	<select id="channel_list" parameterType="hashmap" resultType="hashmap">
+	<include refid="common.pagingPre"/>
+		SELECT /* channel_SQL.list */
+		       ROW_NUMBER() OVER (ORDER BY A.CH_CD DESC) RNUM
+		      ,A.CH_CD
+		      ,A.CH_NM
+		      ,A.CH_KIND_CD
+		      ,A.CH_NO
+		      ,A.RATIO_CD
+		      ,A.SORT_NO
+		      ,A.PAYFREE_YN
+              ,A.HD_YN
+		      ,A.DEL_YN 
+		  FROM TCM_CHANNEL A
+		 WHERE 1=1
+		<if test="s_ch_cd != null and s_ch_cd != ''">
+	       AND A.CH_CD LIKE '%' || #{s_ch_cd} || '%'
+	    </if>
+	    <if test="s_ch_nm != null and s_ch_nm != ''">
+	       AND UPPER(A.CH_NM )LIKE '%' || UPPER( #{s_ch_nm} ) || '%'
+	    </if>
 	<include refid="common.pagingPost"/> 
 	</select>
 	
 	<select id="detail" parameterType="hashmap" resultType="hashmap">
-	<![CDATA[
-		SELECT /* channel.detail */
+		SELECT /* channel_SQL.detail */
 			   CH_CD
 		      ,CH_NM
 		      ,CH_KIND_CD
@@ -36,9 +40,115 @@
 		      ,DEL_YN
 		  FROM TCM_CHANNEL
 		 WHERE 1=1
-		   AND CH_CD = #{ch_cd}		
-		]]>
+		   AND CH_CD = #{s_ch_cd}
 	</select>	
+	
+	<select id="channel_image_list" parameterType="hashmap" resultType="hashmap">
+		SELECT /* channel_SQL.channel_image_list*/
+		       A.CODE
+		      ,A.CODE_NAME
+		      ,B.WEB_URL
+		      ,B.INS_DT
+		      ,B.UPD_DT
+		  FROM JWORK_CODE A 
+		      ,TCM_IMG B
+		 WHERE 1=1
+		   AND A.USE_YN = 'Y'
+		   AND A.CODE_GROUP = 'CAIC'
+		   AND B.DEL_YN(+) = 'N'
+		   AND B.IMG_GUBUN_CD(+) = 'CAIK0100'
+		   AND A.CODE = B.IMG_SECT1_CD(+)
+		   AND B.MAST_CD(+) = #{s_ch_cd}
+		 ORDER BY A.CODE_SEQ
+	</select>
+	
+	<select id="channel_url_list" parameterType="hashmap" resultType="hashmap">
+		SELECT /* channel_SQL.channel_url_list*/
+		       A.CODE
+			  ,A.CODE_NAME
+			  ,B.BROAD_URL
+			  ,B.PREVIEW_URL
+<!-- 			  ,B.MULTI_VIEW_URL -->
+			  ,B.AUDIO_ONLY_URL
+			  ,B.DEL_YN   
+		  FROM JWORK_CODE A
+		      ,TCM_CHANNEL_URL B
+		 WHERE 1=1
+		   AND A.USE_YN = 'Y'
+		   AND A.CODE_GROUP = 'CSSD'
+		   AND B.SERV_KEY(+) IN ('023','100','200','523')  
+		   AND A.CODE = B.SCR_CD(+)
+		   AND B.CH_CD(+) = #{s_ch_cd}
+	</select>	
+	
+	<update id="updateChannel" parameterType="hashmap">
+		/* channel_SQL.updateChannel */
+		UPDATE TCM_CHANNEL
+		   SET CH_NM = #{s_ch_nm}	
+		 WHERE CH_CD = #{s_ch_cd}
+	</update>
+	
+	<update id="updateChannelInfo" parameterType="hashmap">
+		/* channel_SQL.updateChannelInfo */
+		UPDATE TCM_CHANNEL
+		   SET CH_NM = #{s_ch_nm}	
+		 WHERE CH_CD = #{s_ch_cd}
+	</update>
+	
+	<update id="updateChannelImage" parameterType="hashmap">
+		/* channel_SQL.updateChannelImage */
+		UPDATE TCM_CHANNEL
+		   SET CH_NM = #{s_ch_nm}	
+		 WHERE CH_CD = #{s_ch_cd}
+	</update>
+	<update id="updateChannelUrl" parameterType="hashmap">
+		/* channel_SQL.updateChannelUrl */
+        MERGE INTO TCM_CHANNEL_URL A    
+             USING (SELECT ${s_ch_cd} AS CH_CD  
+                          ,${scr_cd} AS SCR_CD
+                          ,'0100' AS SERV_KEY
+                          ,${broad_url} AS BROAD_URL
+                          ,${preview_url} AS PREVIEW_URL
+                          ,${audio_only_url} AS AUDIO_ONLY_URL
+                          ,${del_yn} AS DEL_YN
+                          ,${user_id} AS USER_ID
+                          ,TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS') AS DATETIME      
+                      FROM DUAL
+                   ) B 
+               ON (        
+                    A.CH_CD = B.CH_CD
+                AND A.SCR_CD = B.SCR_CD
+                  )
+       WHEN MATCHED THEN
+           UPDATE SET A.SERV_KEY = B.SERV_KEY
+                     ,A.BROAD_URL = B.BROAD_URL
+                     ,A.PREVIEW_URL = B.PREVIEW_URL
+                     ,A.AUDIO_ONLY_URL = B.AUDIO_ONLY_URL
+                     ,A.DEL_YN = B.DEL_YN
+                     ,A.UPD_ID      = B.USER_ID
+                     ,A.UPD_DT      = B.DATETIME
+       WHEN NOT MATCHED THEN
+           INSERT (A.CH_CD
+                  ,A.SCR_CD
+                  ,A.SERV_KEY
+                  ,A.BROAD_URL
+                  ,A.PREVIEW_URL
+                  ,A.AUDIO_ONLY_URL
+                  ,A.DEL_YN
+                  ,A.INS_ID
+                  ,A.INS_DT
+           ) VALUES ( 
+                   B.CH_CD
+                  ,B.SCR_CD
+                  ,B.SERV_KEY
+                  ,B.BROAD_URL
+                  ,B.PREVIEW_URL
+                  ,B.AUDIO_ONLY_URL
+                  ,B.DEL_YN
+                  ,B.USER_ID
+                  ,B.DATETIME
+           )
+	</update>
 	
 	<insert id="insertChannel" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
@@ -67,27 +177,6 @@
 			)
 		]]>
 	</insert>
-	
-	<update id="updateHitCnt" parameterType="hashmap">
-		<![CDATA[
-			UPDATE TB_BOARD 
-			SET
-				HIT_CNT = NVL(HIT_CNT, 0) + 1
-			WHERE
-				IDX = #{IDX}	
-		]]>
-	</update>
-	
-	<update id="updateChannel" parameterType="hashmap">
-		<![CDATA[
-			UPDATE TB_BOARD 
-			SET
-				TITLE = #{TITLE},
-				CONTENTS = #{CONTENTS}
-			WHERE
-				IDX = #{IDX}	
-		]]>
-	</update>
 	
 	<update id="deleteChannel" parameterType="hashmap">
 		<![CDATA[

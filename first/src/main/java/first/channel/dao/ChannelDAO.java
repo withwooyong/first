@@ -16,46 +16,68 @@ public class ChannelDAO extends AbstractDAO {
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectPagingList("channel.list", map);
+	public List<Map<String, Object>> channel_list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("channel_SQL.channel_list", map);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
-		return (Map<String, Object>) selectOne("channel.detail", map);
+		return (Map<String, Object>) selectOne("channel_SQL.detail", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> channel_image_list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("channel_SQL.channel_image_list", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> channel_url_list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("channel_SQL.channel_url_list", map);
 	}
 	
 	public void insertChannel(Map<String, Object> map) throws Exception {
-		insert("channel.insertChannel", map);
+		insert("channel_SQL.insertChannel", map);
 	}
 
 	public void updateHitCnt(Map<String, Object> map) throws Exception {
-		update("channel.updateHitCnt", map);
+		update("channel_SQL.updateHitCnt", map);
 	}	
 
-	public void updateChannel(Map<String, Object> map) throws Exception {
-		update("channel.updateChannel", map);
+	public int updateChannel(Map<String, Object> map) throws Exception {
+		return (int)update("channel_SQL.updateChannel", map);
+	}
+	
+	public int updateChannelInfo(Map<String, Object> map) throws Exception {
+		return (int)update("channel_SQL.updateChannelInfo", map);
+	}
+	
+	public int updateChannelImage(Map<String, Object> map) throws Exception {
+		return (int)update("channel_SQL.updateChannelImage", map);
+	}
+	
+	public int updateChannelUrl(Map<String, Object> map) throws Exception {
+		return (int)update("channel_SQL.updateChannelUrl", map);
 	}
 
 	public void deleteChannel(Map<String, Object> map) throws Exception {
-		update("channel.deleteChannel", map);
+		update("channel_SQL.deleteChannel", map);
 	}
 
 	public void insertFile(Map<String, Object> map) throws Exception {
-		insert("channel.insertFile", map);
+		insert("channel_SQL.insertFile", map);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectFileList(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectList("channel.selectFileList", map);
+		return (List<Map<String, Object>>) selectList("channel_SQL.selectFileList", map);
 	}
 
 	public void deleteFileList(Map<String, Object> map) throws Exception {
-		update("channel.deleteFileList", map);
+		update("channel_SQL.deleteFileList", map);
 	}
 
 	public void updateFile(Map<String, Object> map) throws Exception {
-		update("channel.updateFile", map);
+		update("channel_SQL.updateFile", map);
 	}
 
 }

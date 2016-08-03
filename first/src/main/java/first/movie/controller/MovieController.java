@@ -25,10 +25,10 @@ public class MovieController {
 	private MovieService service;
 
 	// http://localhost:8080/first/movie/movie.do
-	@RequestMapping(value = "/movie/main.do")
+	@RequestMapping(value = "/movie/movie.do")
 	public String movie(CommandMap commandMap) throws Exception {
 		//response.setHeader("cache-control","no-cache,no-store"):
-		return "/movie/main";
+		return "/movie/movie";
 	}
 
 	/**

@@ -28,11 +28,11 @@
 					<div class="form-group">
 						<label for="s_cd_cust" class="col-md-1 control-label">거래처번호:</label>
 						<div class="col-md-2">
-							<input class="form-control" id="s_cd_cust" name="search_cd_cust" type="text" placeholder="1115">
+							<input class="form-control" id="s_cd_cust" name="s_cd_cust" type="text" placeholder="1115" onkeypress="if(event.keyCode==13) { enterKey(); return false;}" >
 						</div>						
 						<label for="search_kn_cust" class="col-md-1 control-label">PP사명:</label>
 						<div class="col-md-2">
-							<input class="form-control" id="s_kn_cust" name="search_kn_cust" type="text" placeholder="CJ E&M">
+							<input class="form-control" id="s_kn_cust" name="s_kn_cust" type="text" placeholder="CJ E&M" onkeypress="enterKey();">
 						</div>
 					</div>
 				</div>
@@ -49,16 +49,13 @@
 						<h3 class="box-title">MCP목록</h3>
 					</div>
 					<!-- /.box-header -->
-					<div class="box-body">
-						<table id="mcp_list" class="table table-bordered table-striped">
+					<div class="box-body" style="overflow:scroll;height:auto;max-height:250px;overflow:auto">
+						<table id="mcp_list" class="table table-bordered table-hover">
 			              	<thead>
 			              		<tr>
-									<th>번호</th>
 									<th>거래처번호</th>
-									<th>법인유무</th>
 									<th>거래처명</th>
-									<th>업태</th>
-									<th>업종</th>
+									<th>법인유무</th>									
 									<th>사업자번호</th>
 									<th>대표자명</th>
 									<th>사용여부</th>
@@ -84,7 +81,6 @@
 						<table id="scp_list" class="table table-bordered table-striped">            
 							<thead>
 								<tr>
-									<th>번호</th>
 									<th>거래처번호</th>
 									<th>거래처명</th>
 									<th>사업자번호</th>
@@ -115,49 +111,94 @@
 			<table class="table table-bordered">
 				<!-- tr th success, info, warning, danger -->
 				<tr class="success">
-					<th>거래처번호</th>
-					<td><label id="corpid"></label></td>
-					<th>거래처명</th>
-					<td colspan="3"><label id="kn_cust"></label></td>
+					<th class="col-md-1">거래처번호</th>
+					<td class="col-md-2"><label id="i_corpid"></label></td>
+					<th class="col-md-1">거래처명</th>
+					<td class="col-md-2"><label id="i_kn_cust"></label></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
 				</tr>
 				<tr class="warning">
-					<th>사업자번호</th>
-					<td><label id="O_NO_TAX"></label></td>
-					<th>대표자명</th>
-					<td colspan="3"><label id="O_KN_PRESIDENT"></label></td>
+					<th class="col-md-1">사업자번호</th>
+					<td class="col-md-2"><label id="i_no_tax"></label></td>
+					<th class="col-md-1">대표자명</th>
+					<td class="col-md-2"><label id="i_kn_president"></label></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
 				</tr>
 				<tr class="info">
-					<th>업태</th>
-					<td><label id="O_KN_BUSINESSCOND"></label></td>
-					<th>종목</th>
-					<td><label id="O_KN_ITEM"></label></td>
-					<th>거래처분류</th>
-					<td><label id="O_CL_CUST_NM"></label></td>
+					<th class="col-md-1">업태</th>
+					<td class="col-md-2"><label id="i_kn_businesscond"></label></td>
+					<th class="col-md-1">종목</th>
+					<td class="col-md-2"><label id="i_kn_item"></label></td>
+					<th class="col-md-1">거래처분류</th>
+					<td class="col-md-2"><label id="i_cl_cust"></label></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
 				</tr>
 				<tr class="success">
-					<th>우편번호</th>
-					<td><label id="O_NO_POST"></label></td>
-					<th>주소</th>
-					<td colspan="3"><label id="O_KN_ADDRESS"></label></td>
+					<th class="col-md-1">우편번호</th>
+					<td class="col-md-2"><label id="i_no_post"></label></td>
+					<th class="col-md-1">주소</th>
+					<td class="col-md-2"><label id="i_kn_address"></label></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
 				</tr>
 				<tr class="warning">
-					<th>전화번호</th>
-					<td><label id="NO_TEL"></label></td>
-					<th>팩스번호</th>
-					<td><label id="NO_FAX"></label></td>
-					<th>사용유무</th>
-					<td><label id="O_YN_USE"></td>
+					<th class="col-md-1">전화번호</th>
+					<td class="col-md-2"><label id="i_no_tel"></label></td>
+					<th class="col-md-1">팩스번호</th>
+					<td class="col-md-2"><label id="i_no_fax"></label></td>
+					<th class="col-md-1">사용유무</th>
+					<td class="col-md-2"><label id="i_yn_use"></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
 				</tr>
 				<tr class="info">
-					<th>담당자이름</th>
-					<td><label id="KN_CUSTEMP"></td>
-					<th>담당자연락처</th>
-					<td><label id="KN_CUSTTEL"></td>
-					<th>담당자이메일</th>
-					<td><label id="E_MAIL"></td>
+					<th class="col-md-1">담당자이름</th>
+					<td class="col-md-2"><label id="i_kn_custemp"></td>
+					<th class="col-md-1">담당자연락처</th>
+					<td class="col-md-2"><label id="i_kn_custtel"></td>
+					<th class="col-md-1">담당자이메일</th>
+					<td class="col-md-2"><label id="i_e_mail"></td>
+					<th class="col-md-1"></th>
+					<td class="col-md-2"></td>
 				</tr>
 			</table>
 		</div>
+		
+		<section class="content">
+			<div class="box-header with-border">
+				<h3 class="box-title">PP사채널목록</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<table id="channel_list" class="table table-bordered table-striped">
+	              	<thead>
+	              		<tr>
+							<th>번호</th>
+							<th>채널코드</th>
+							<th>채널명</th>
+							<th>채널구분</th>
+							<th>방송구분</th>
+							<th>HD</th>
+							<th>등록일시</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 리스트내용 들어감 -->
+					</tbody>
+				</table>
+			</div>
+			<!-- /.box-body -->
+				
+	  </section>
 		<!-- /.box-body -->
         <div class="box-footer">
         	footer
@@ -172,12 +213,27 @@
 <script type="text/javascript" src="${ctx}/js/page.pp.main.js?v=${version}"></script>
 <script type="text/javascript">
 
+function enterKey() {
+    if (event.which == 13 || event.keyCode == 13) {
+        //code to execute here
+        fn_selectMCPList("searchForm");
+        return false;
+    }
+    return true;
+};
+
+// $('input[type=text]').on('keyup', function(e) {
+//     if (e.which == 13) {
+//         e.preventDefault();
+//     }
+// });
+
 $(document).ready(function(){
-	//fn_selectMovieList(1);
+	fn_selectMCPList(1);
 	
 	$("#search").on("click", function(e){ //파일 추가 버튼
 		e.preventDefault();		
-		fn_selectMovieList("searchForm");
+		fn_selectMCPList("searchForm");
 	});
 	
 // 			$("a[name='delete']").on("click", function(e){ //삭제 버튼

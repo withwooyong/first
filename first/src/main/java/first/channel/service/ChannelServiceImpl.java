@@ -23,13 +23,23 @@ public class ChannelServiceImpl implements ChannelService {
 	private ChannelDAO dao;
 
 	@Override
-	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
-		return dao.list(map);
+	public List<Map<String, Object>> channel_list(Map<String, Object> map) throws Exception {
+		return dao.channel_list(map);
 	}
 	
 	@Override
 	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
 		return dao.detail(map);
+	}
+	
+	@Override
+	public List<Map<String, Object>> channel_image_list(Map<String, Object> map) throws Exception {
+		return dao.channel_image_list(map);
+	}
+	
+	@Override
+	public List<Map<String, Object>> channel_url_list(Map<String, Object> map) throws Exception {
+		return dao.channel_url_list(map);
 	}
 
 	@Override
@@ -40,23 +50,26 @@ public class ChannelServiceImpl implements ChannelService {
 		for (int i = 0, size = list.size(); i < size; i++) {
 			dao.insertFile(list.get(i));
 		}
-	}	
+	}
 
 	@Override
-	public void updateChannel(Map<String, Object> map, HttpServletRequest request) throws Exception {
-		dao.updateChannel(map);
-
-		dao.deleteFileList(map);
-		List<Map<String, Object>> list = fileUtils.parseUpdateFileInfo(map, request);
-		Map<String, Object> tempMap = null;
-		for (int i = 0, size = list.size(); i < size; i++) {
-			tempMap = list.get(i);
-			if (tempMap.get("IS_NEW").equals("Y")) {
-				dao.insertFile(tempMap);
-			} else {
-				dao.updateFile(tempMap);
-			}
-		}
+	public int updateChannel(Map<String, Object> map) throws Exception {
+		return dao.updateChannel(map);		
+	}
+	
+	@Override
+	public int updateChannelInfo(Map<String, Object> map) throws Exception {
+		return dao.updateChannelInfo(map);		
+	}
+	
+	@Override
+	public int updateChannelImage(Map<String, Object> map) throws Exception {
+		return dao.updateChannelImage(map);		
+	}
+	
+	@Override
+	public int updateChannelUrl(Map<String, Object> map) throws Exception {
+		return dao.updateChannelUrl(map);		
 	}
 
 	@Override

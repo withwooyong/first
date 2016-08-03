@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,33 +22,24 @@ public class PPServiceImpl implements PPService {
 
 	@Resource(name = "ppDAO")
 	private PPDAO dao;
-
+	
 	@Override
-	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
-		return dao.list(map);
+	public List<Map<String, Object>> mcp_list(Map<String, Object> map) throws Exception {
+		return dao.mcp_list(map);
 	}
 	
 	@Override
-	public List<Map<String, Object>> lists(Map<String, Object> map) throws Exception {
-		return dao.lists(map);
+	public List<Map<String, Object>> scp_list(Map<String, Object> map) throws Exception {
+		return dao.scp_list(map);
 	}
-
+	
 	@Override
 	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
 		return dao.detail(map);
 	}
 	
-	public Object insert(Map<String, Object> map, HttpServletRequest request) throws Exception {
-		return dao.insert(map); 
-	}
-	
 	@Override
-	public Object update(Map<String, Object> map, HttpServletRequest request) throws Exception {
-		return dao.update(map);
-	}
-
-	@Override
-	public Object delete(Map<String, Object> map) throws Exception {
-		return dao.delete(map);
+	public List<Map<String, Object>> channel_list(Map<String, Object> map) throws Exception {
+		return dao.channel_list(map);
 	}
 }
