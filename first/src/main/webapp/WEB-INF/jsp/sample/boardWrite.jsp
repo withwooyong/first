@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,7 +11,7 @@
 			<colgroup>
 				<col width="15%">
 				<col width="*"/>
-			</colgroup>
+			</colgroup>			
 			<caption>게시글 작성</caption>
 			<tbody>
 				<tr>

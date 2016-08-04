@@ -123,10 +123,12 @@
 			</div>
 		</div>
 		
-		<!-- channel image -->	  
+		<!-- channel image -->
+		<form action="" class="form-horizontal" id="imageForm" name="imageForm" role="form" enctype="multipart/form-data">
       	<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">채널이미지</h3>
+				<button type="submit" id="channel_image_save" class="btn btn-info pull-right">이미지저장</button>
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive ">
@@ -147,6 +149,7 @@
 			</div>
 			<!-- /.box-body -->
 		</div>
+		</form>
 		
 		<!-- channel url -->	  
       	<div class="box">
@@ -203,14 +206,12 @@ $(document).ready(function() {
 	
 	$("#channel_image_save").on("click", function(e){ // 이미지저장 버튼
 		e.preventDefault();
-		fn_updateChannelImage();
+		fn_updateChannelImage("imageForm");
 	});
 	
 	$("#channel_url_save").on("click", function(e){ // URL 저장버튼
 		e.preventDefault();
 		fn_updateChannelUrl("channel_url_list");
-	});
-	
-	
+	});	
 });
 </script>

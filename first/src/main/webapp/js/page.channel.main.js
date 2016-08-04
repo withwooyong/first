@@ -95,13 +95,22 @@
 		var str = "";
 		
 		$.each(data.channel_image_list, function(key, value) {
+			var imagePath = "";
+			
+			if (value.WEB_URL != null) {
+				console.log(value.WEB_URL);
+				imagePath = "<td class='col-md-7'><img src='" + imageDomain + value.WEB_URL + "'></td>";
+			} else {
+				console.log(value.WEB_URL);
+				imagePath = "<td class='col-md-7'><input type='file' name='" + value.CODE + "' id='" + value.CODE + "'></td>";
+			}
 			
 			str += "<tr>"
-					+	"<td>" + value.CODE + "</td>" 
-					+	"<td>" + value.CODE_NAME + "</td>"
-					+	"<td><img src='" + imageDomain + value.WEB_URL + "'></td>"
-					+	"<td>" + value.INS_DT + "</td>"
-					+	"<td>" + value.UPD_DT + "</td>"
+					+   "<td class='col-md-1'><input class='form-control' type='text' name='code' value='" + value.CODE + "' style='border:none' readonly></input></td>"
+					+	"<td class='col-md-2'>" + value.CODE_NAME + "</td>"
+					+   imagePath
+					+	"<td class='col-md-1'>" + value.INS_DT + "</td>"
+					+	"<td class='col-md-1'>" + value.UPD_DT + "</td>"
 					+"</tr>";
 		});
 		channel_image_list.append(str);
@@ -113,7 +122,7 @@
 		var str = "";
 		var channel_url_list_option = $('#channel_url_list option');
 		$.each(data.channel_url_list, function(key, value) {			
-			console.log(key);
+			//console.log(key);
 			var selectY = null;
 			var selectN = null;
 			if (value.DEL_YN == "N") {
@@ -125,12 +134,12 @@
 			}
 			
 			str += "<tr>"
-					+	"<td class='col-md-1'><input class='form-control' type='text' value='" + value.CODE_NAME + "' style='border:none' readonly></input></td>"
-					+	"<td class='col-md-4'><input class='form-control' type='text' value='" + value.BROAD_URL + "'></input></td>"
-					+	"<td class='col-md-3'><input class='form-control' type='text' value='" + value.PREVIEW_URL + "'></input></td>"
-					+	"<td class='col-md-3'><input class='form-control' type='text' value='" + value.AUDIO_ONLY_URL + "'></input></td>"				
+					+	"<td class='col-md-1'><input class='form-control' name='code_name' type='text' value='" + value.CODE_NAME + "' style='border:none' readonly></input></td>"
+					+	"<td class='col-md-4'><input class='form-control' name='broad_url' type='text' value='" + value.BROAD_URL + "'></input></td>"
+					+	"<td class='col-md-3'><input class='form-control' name='preview_url' type='text' value='" + value.PREVIEW_URL + "'></input></td>"
+					+	"<td class='col-md-3'><input class='form-control' name='audio_only_url' type='text' value='" + value.AUDIO_ONLY_URL + "'></input></td>"				
 					+	"<td class='col-md-1'>"
-					+ 		"<select class='form-control select2' style='width: 50%;'>"
+					+ 		"<select class='form-control select2' name='del_yn' style='width: 50%;'>"
 					+ 			"<option value='Y' " + selectY + ">Y</option>"
 					+ 			"<option value='N' " + selectN + ">N</option>"				
 					+ 		"</select>"
@@ -159,37 +168,51 @@
 		comAjax.ajax();
 	}
 	
-	function fn_updateChannelImage(frmObj) {		
-		var comAjax = new ComAjax(frmObj);
-		comAjax.setUrl("updateChannelImage.do");
-		comAjax.addParam("s_ch_cd", document.getElementById('i_ch_cd').value);
-		comAjax.addParam("s_ch_nm", document.getElementById('i_ch_nm').value);
-		comAjax.setCallback("fn_updateChannelCallback");
-		comAjax.ajax();
+	function fn_updateChannelImage(frmObj) {
+		// imageForm
+		var comSubmit = new ComSubmit(frmObj);
+		comSubmit.addParam("s_ch_cd", document.getElementById('i_ch_cd').value);
+		comSubmit.addParam("s_ch_nm", document.getElementById('i_ch_nm').value);
+		comSubmit.setUrl("updateChannelImage.do");
+		comSubmit.submit();
 	}
 	
 	function fn_updateChannelUrl(obj) {
+//		지우지마시오
+//		var channel_url_list = $('#channel_url_list').dataTable();
+//		var data = channel_url_list.$('input, select').serialize(); // 테스트 필요
+//		var data = channel_url_list.$('input, select'); // 됨.
+//		console.log(data);
+
+		var arrKey = "channelUrls";		
+		var str = "{'" + arrKey + "':[";
+		$("#" + obj + " tbody tr").each(function(index, value) {
+			str += "{";
+			$(this).closest('tr').find("input, select").each(function() {
+				//console.log(index + ":" + this.name + ":" + this.value);
+				str += "'" + this.name + "':'" + this.value + "',";
+			});
+			str = str.slice(0, -1); // 마지막 ,쉼표 제거
+			str += "},";
+		});
+		str = str.slice(0, -1); // 마지막 ,쉼표 제거
+		str += "]}";
 		
-		var dataArr = [];
-//	    $(frmObj + " td").each(function() {
-//	        dataArr.push($(this).html());
-//	        console.log($(this).html());
-//	    });
-
-		$("#" + obj + " td").each(function() {
-	    	
-	    });
-	    console.log(dataArr);
-
-//	    $("#" + obj + " tbody tr").find("input").each(function() {
+		var comAjax = new ComAjax(obj);
+		comAjax.setUrl("updateChannelUrl.do");
+		//comAjax.addParam("dataType", "json");
+		comAjax.addParam("s_ch_cd", document.getElementById('i_ch_cd').value);
+		comAjax.addParam("arrKey", arrKey);
+		comAjax.addParam("json", str);
+		comAjax.setCallback("fn_updateChannelCallback");
+		comAjax.ajax();
+//	    	
+//		지우지마시오
+//	    $("#" + obj + " tbody").find("input, select").each(function(key, value) {	    	
+//	    	console.log(this.key + " : " + this.value);
 //	    	dataArr.push(this.value);
-//	    	console.log("value=" + this.key + ":" + this.value);
 //	    });
-	    
-	    
-//	    $.each(dataArr,function(index,value){
-//	    	alert(dataArr[index]);
-//	    });  
+//	    console.log(dataArr);
 	
 //		var comAjax = new ComAjax(obj);
 //		comAjax.setUrl("updateChannelUrl.do");
@@ -200,6 +223,19 @@
 		
 	function fn_updateChannelCallback(data) {
 		alert('success');
+	}
+	
+	function fn_addFile(){
+		var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' class='btn' name='delete'>삭제</a></p>";
+		$("#fileDiv").append(str);
+		$("a[name='delete']").on("click", function(e){ //삭제 버튼
+			e.preventDefault();
+			fn_deleteFile($(this));
+		});
+	}
+	
+	function fn_deleteFile(obj){
+		obj.parent().remove();
 	}
 	
 	

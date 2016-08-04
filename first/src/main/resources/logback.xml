@@ -80,20 +80,19 @@
             <!-- 설정파일에 RUN_MODE 가 SERVICE로 정의되어 있으면 로깅 레벨을 INFO로 지정 -->
             <root level="info">
                 <appender-ref ref="console"/>
-                <appender-ref ref="FILE"/>
+<!--                 <appender-ref ref="FILE"/> -->
             </root>
         </then>
         <!-- 설정파일에 RUN_MODE 가 SERVICE로 정의되어 있지 않으면  로깅 레벨을 DEBUG 지정 -->
         <else>
             <root level="debug">
                 <appender-ref ref="console"/>
-                <appender-ref ref="FILE"/>
+<!--                 <appender-ref ref="FILE"/> -->
             </root>
         </else>
     </if>
     
     
-	
     
     <!-- 이 아래에 있는 애들 다 log로 찍겠다.
     <logger name="com.first.intercept.LoginInterceptor" level="info">

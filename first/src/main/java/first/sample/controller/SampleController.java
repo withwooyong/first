@@ -116,10 +116,14 @@ public class SampleController {
 	
 	@RequestMapping(value="/sample/deleteBoard.do")
 	public ModelAndView deleteBoard(CommandMap commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
-		
-		sampleService.deleteBoard(commandMap.getMap());
-		
+		ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");		
+		sampleService.deleteBoard(commandMap.getMap());		
 		return mv;
 	}
+	
+	@RequestMapping(value="/sample/example.do")
+    public ModelAndView example(CommandMap commandMap) throws Exception{
+    	ModelAndView mv = new ModelAndView("/sample/example");    	
+    	return mv;
+    }
 }

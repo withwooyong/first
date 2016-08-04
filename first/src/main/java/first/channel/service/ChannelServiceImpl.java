@@ -6,15 +6,20 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import first.channel.dao.ChannelDAO;
 import first.common.util.FileUtils;
+import first.common.util.JsonUtils;
 
 @Service("channelService")
 public class ChannelServiceImpl implements ChannelService {
-	Logger log = Logger.getLogger(this.getClass());
+	
+	protected Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Resource(name = "fileUtils")
 	private FileUtils fileUtils;
@@ -63,13 +68,28 @@ public class ChannelServiceImpl implements ChannelService {
 	}
 	
 	@Override
-	public int updateChannelImage(Map<String, Object> map) throws Exception {
-		return dao.updateChannelImage(map);		
+	public int updateChannelImage(Map<String, Object> map, HttpServletRequest request) throws Exception {		
+		int result = 0;
+		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(map, request);
+		for (int i = 0, size = list.size(); i < size; i++) {
+			//result = dao.updateChannelImage(map);
+		}
+		return result;		
 	}
 	
 	@Override
-	public int updateChannelUrl(Map<String, Object> map) throws Exception {
-		return dao.updateChannelUrl(map);		
+	public int updateChannelUrl(Map<String, Object> map) throws Exception {		
+		int result = 0;
+		JSONObject jsnobject = new JSONObject(map.get("json").toString());
+		JSONArray jsonArray = jsnobject.getJSONArray(map.get("arrKey").toString());
+		
+		for (int i = 0; i < jsonArray.length(); i++) {
+	        JSONObject jsonObj = jsonArray.getJSONObject(i);
+	        Map<String, Object> jsonMap = JsonUtils.jsonToMap(jsonObj);
+	        map.putAll(jsonMap);
+	        result = dao.updateChannelUrl(map);
+	    }
+		return result;
 	}
 
 	@Override

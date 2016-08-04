@@ -120,20 +120,21 @@ public class ChannelController {
 	}
 	
 	@RequestMapping(value = "/channel/updateChannelImage.do")
-	public ModelAndView updateChannelInfoImage(CommandMap commandMap) throws Exception {
-		ModelAndView mv = new ModelAndView("jsonView");
-		service.updateChannelImage(commandMap.getMap());
+	public ModelAndView updateChannelInfoImage(CommandMap commandMap, HttpServletRequest request) throws Exception {
+		//ModelAndView mv = new ModelAndView("jsonView");
+		ModelAndView mv = new ModelAndView("redirect:/channel/channel.do");
+		service.updateChannelImage(commandMap.getMap(), request);
 		return mv;
 	}
 	
 	@RequestMapping(value = "/channel/updateChannelUrl.do")
 	public ModelAndView updateChannelInfoUrl(CommandMap commandMap) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
-		log.debug(commandMap.getMap().toString());
-		//service.updateChannelUrl(commandMap.getMap());
+		service.updateChannelUrl(commandMap.getMap());
 		return mv;
 	}
-
+	
+	
 	@RequestMapping(value = "/channel/deleteChannel.do")
 	public ModelAndView deleteChannel(CommandMap commandMap) throws Exception {
 		ModelAndView mv = new ModelAndView("redirect:/channel/openChannelList.do");

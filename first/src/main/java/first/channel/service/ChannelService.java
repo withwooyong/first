@@ -21,7 +21,7 @@ public interface ChannelService {
 	
 	int updateChannelInfo(Map<String, Object> map) throws Exception;
 	
-	int updateChannelImage(Map<String, Object> map) throws Exception;
+	int updateChannelImage(Map<String, Object> map, HttpServletRequest request) throws Exception;
 	
 	int updateChannelUrl(Map<String, Object> map) throws Exception;
 
