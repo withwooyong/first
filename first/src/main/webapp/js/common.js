@@ -48,6 +48,55 @@ function ComSubmit(opt_formId) {
 	};
 }
 
+function ComAjaxSubmit(opt_formId) {
+	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
+	this.url = "";
+	this.mimeType = "";
+
+	if (this.formId == "commonForm") {
+		$("#commonForm")[0].reset();
+		$("#commonForm").empty();
+	}
+
+	this.setUrl = function setUrl(url) {
+		this.url = url;
+	};
+	
+	this.setMimeType = function setMimeType(mimeType) {
+		this.mimeType = mimeType; // "multipart/form-data"
+	};
+	
+	this.addParam = function addParam(key, value) {
+		$("#" + this.formId).append($("<input type='hidden' name='" + key + "' id='" + key + "' value='" + value + "' >"));
+	};	
+	
+	this.submit = function submit() {
+		console.log(this.url);
+		console.log(this.mimeType);
+		var form = $("#" + this.formId)[0];
+		var formData = new FormData(form);
+		console.log(formData);
+	    $.ajax({
+	        url: this.url,
+		    type: 'POST',
+		    data :  formData,
+		    mimeType :this.mimeType,
+		    contentType : false,
+		    cache : false,
+		    processData:false,
+		    success: function(response, textStatus, jqXHR) {
+		    	console.log(textStatus);
+		    	alert(textStatus);		
+		    	//$('#divID').html(response);   //select the id and put the response in the html
+		    },
+		    error: function(jqXHR, textStatus, errorThrown) {
+		    	console.log(textStatus);
+		    	alert(textStatus);
+		    }          
+	    });
+	};
+}
+
 var gfv_ajaxCallback = "";
 
 function ComAjax(opt_formId) {

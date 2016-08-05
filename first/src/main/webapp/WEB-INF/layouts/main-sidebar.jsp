@@ -54,7 +54,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>PP사현황</a></li>
+            <li><a href="${ctx}/pp/pp.do"><i class="fa fa-circle-o"></i>PP사현황</a></li>
           </ul>
         </li>
         <!-- 공통관리메뉴 -->
@@ -76,7 +76,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>채널[메타]</a></li>
+            <li><a href="${ctx}/channel/channel.do"><i class="fa fa-circle-o"></i>채널[메타]</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>채널[이미지]</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>채널[노출]</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>채널[편성표]</a></li>
@@ -90,9 +90,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i>VOD메타[방송]</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>VOD메타[영화]</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>VOD메타[클립]</a></li>
+            <li><a href="${ctx}/program/program.do"><i class="fa fa-circle-o"></i>VOD메타[방송]</a></li>
+            <li><a href="${ctx}/movie/movie.do"><i class="fa fa-circle-o"></i>VOD메타[영화]</a></li>
+            <li><a href="${ctx}/clip/clip.do"><i class="fa fa-circle-o"></i>VOD메타[클립]</a></li>
           </ul>
         </li>
       </ul>

@@ -23,7 +23,7 @@
 			</div>
 			<!-- /.box-header -->
 			<!-- form start -->
-			<form action="" class="form-horizontal" id="searchForm" name="searchForm" role="form">
+			<form action="" class="form-horizontal" id="search_form" name="search_form" role="form">
 				<div class="box-body">
 					<div class="form-group">
 						<label for="s_ch_nm" class="col-md-1 control-label">채널명:</label>
@@ -191,7 +191,7 @@ $(document).ready(function() {
 	
 	$("#search").on("click", function(e) {
 		e.preventDefault();
-		fn_selectChannelList("searchForm");
+		fn_selectChannelList("search_form");
 	});
 	
 	$("#save").on("click", function(e){ // 채널저장 버튼

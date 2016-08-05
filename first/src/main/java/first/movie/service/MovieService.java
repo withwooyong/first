@@ -15,6 +15,10 @@ public interface MovieService {
 	
 	Map<String, Object> detail(Map<String, Object> map) throws Exception;
 	
+	List<Map<String, Object>> movie_image_list(Map<String, Object> map) throws Exception;
+	
+	int updateMovieImage(Map<String, Object> map, HttpServletRequest request) throws Exception;
+	
 	Object insert(Map<String, Object> map, HttpServletRequest request) throws Exception;
 	
 	Object update(Map<String, Object> map, HttpServletRequest request) throws Exception;

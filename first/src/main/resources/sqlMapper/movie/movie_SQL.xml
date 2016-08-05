@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="movie">
+<mapper namespace="movie_SQL">
 
 	<select id="lists" parameterType="hashmap" resultType="Movie">
-		SELECT /* movie.lists */
+		SELECT /* movie_SQL.lists */
 		       * 
 		  FROM TCM_MOVIE A
 		 WHERE 1=1
@@ -13,7 +13,7 @@
 
 	<select id="list" parameterType="hashmap" resultType="hashmap">
 		<include refid="common.pagingPre"/>
-        SELECT /* movie.list */
+        SELECT /* movie_SQL.list */
                ROW_NUMBER() OVER (ORDER BY A.INS_DT DESC) RNUM
               ,A.MOVIE_CD
               ,A.MOVIE_NM
@@ -23,18 +23,18 @@
               ,A.DEL_YN 
           FROM TCM_MOVIE A
          WHERE 1=1
-         <if test="movie_cd != null and movie_cd != ''">
-           AND A.MOVIE_CD = #{movie_cd}
+         <if test="s_movie_cd != null and s_movie_cd != ''">
+           AND A.MOVIE_CD = #{s_movie_cd}
          </if>  
-         <if test="movie_nm != null and movie_nm != ''">
-           AND A.MOVIE_NM LIKE '%'||#{movie_nm}||'%' 	
+         <if test="s_movie_nm != null and s_movie_nm != ''">
+           AND A.MOVIE_NM LIKE '%'||#{s_movie_nm}||'%' 	
          </if>  
-           AND A.INS_DT > '20160404'
+           AND A.INS_DT > '20150101'
         <include refid="common.pagingPost"/> 
 	</select>
 	
 	<select id="detail" parameterType="hashmap" resultType="hashmap">
-		SELECT /* movie.detail */
+		SELECT /* movie_SQL.detail */
                A.MOVIE_CD
               ,A.MOVIE_NM
               ,A.GENRE_CD
@@ -43,50 +43,55 @@
               ,A.DEL_YN 
          FROM TCM_MOVIE A
         WHERE 1=1
-          AND A.MOVIE_CD = #{movie_cd}
+          AND A.MOVIE_CD = #{s_movie_cd}
 	</select>
 	
-	<insert id="insert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
-		/* movie.insert */
-		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
-			SELECT SEQ_TB_BOARD_IDX.NEXTVAL FROM DUAL
-		</selectKey>
-		<![CDATA[
-			INSERT INTO TB_BOARD
-			(
-				IDX,
-			    TITLE, 
-			    CONTENTS, 
-			    HIT_CNT, 
-			    DEL_GB, 
-			    CREA_DTM, 
-			    CREA_ID
-			)
-			VALUES
-			(
-				#{IDX}, 
-				#{TITLE},
-				#{CONTENTS},
-			    0, 
-			    'N', 
-			    SYSDATE, 
-			    'Admin'
-			)
-		]]>
-	</insert>
+	<!--
+	CODE_GROUP 
+	CAIC    CA    이미지-채널
+	CAIP    CA    이미지-프로그램
+	CAIE    CA    이미지-에피소드
+	CAIM    CA    이미지-영화
+	CAIS    CA    이미지-ShortClip
 	
-	<update id="update" parameterType="hashmap">
-		/* movie.update */
+	IMG_GUBUN_CD
+	CAIK    CAIK0100    채널
+	CAIK    CAIK0200    프로그램
+	CAIK    CAIK0300    에피소드
+	CAIK    CAIK0400    영화
+	CAIK    CAIK0600    ShortClip
+	 -->	
+	<select id="movie_image_list" parameterType="hashmap" resultType="hashmap">
+		SELECT /* movie_SQL.movie_image_list*/
+		       A.CODE
+		      ,A.CODE_NAME
+		      ,B.WEB_URL
+		      ,B.INS_DT
+		      ,B.UPD_DT
+		  FROM JWORK_CODE A 
+		      ,TCM_IMG B
+		 WHERE 1=1
+		   AND A.USE_YN = 'Y'
+		   AND A.CODE_GROUP = 'CAIM'
+		   AND B.DEL_YN(+) = 'N'
+		   AND B.IMG_GUBUN_CD(+) = 'CAIK0400'
+		   AND A.CODE = B.IMG_SECT1_CD(+)
+		   AND B.MAST_CD(+) = #{s_movie_cd}
+		 ORDER BY A.CODE_SEQ
+	</select>
+	
+	<update id="updateMovieImage" parameterType="hashmap">
+		/* movie_SQL.updateMovieImage */
 		UPDATE TCM_MOVIE 
-		   SET MOVIE_NM = #{movie_nm_detail}
-	     WHERE MOVIE_CD = #{movie_cd_detail}
+		   SET MOVIE_NM = #{i_movie_nm}
+	     WHERE MOVIE_CD = #{i_movie_cd}
 	</update>
 	
-	<update id="delete" parameterType="hashmap">
-		/* movie.delete */
+	<update id="deleteMovieImage" parameterType="hashmap">
+		/* movie_SQL.deleteMovieImage */
 		UPDATE TCM_MOVIE 
 		   SET DEL_YN = 'Y'
-	     WHERE MOVIE_CD = #{movie_cd_detail}
+	     WHERE MOVIE_CD = #{i_movie_cd}
 	</update>
 	
 </mapper>

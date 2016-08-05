@@ -17,28 +17,33 @@ public class MovieDAO extends AbstractDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectPagingList("movie.list", map);
+		return (List<Map<String, Object>>) selectPagingList("movie_SQL.list", map);
 	}	
 	
 	@SuppressWarnings("unchecked")
 	public List<Movie> lists(Map<String, Object> map) throws Exception {
-		return (List<Movie>) selectPagingList("movie.lists", map);
+		return (List<Movie>) selectPagingList("movie_SQL.lists", map);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
-		return (Map<String, Object>) selectOne("movie.detail", map);
+		return (Map<String, Object>) selectOne("movie_SQL.detail", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> movie_image_list(Map<String, Object> map) throws Exception {
+		return (List<Map<String, Object>>) selectPagingList("movie_SQL.movie_image_list", map);
 	}
 	
 	public Object insert(Map<String, Object> map) throws Exception{
-		return update("movie.insert", map);
+		return update("movie_SQL.insert", map);
 	}
 	
 	public Object update(Map<String, Object> map) throws Exception{
-		return update("movie.update", map);
+		return update("movie_SQL.update", map);
 	}
 
 	public Object delete(Map<String, Object> map) throws Exception{
-		return update("movie.delete", map);
+		return update("movie_SQL.delete", map);
 	}
 }

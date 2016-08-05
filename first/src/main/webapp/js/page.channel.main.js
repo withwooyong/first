@@ -2,7 +2,7 @@
 	function enterKey() {
 	    if (event.which == 13 || event.keyCode == 13) {
 	        //code to execute here
-	        fn_selectChannelList("searchForm");
+	        fn_selectChannelList("search_form");
 	        return false;
 	    }
 	    return true;
@@ -95,20 +95,20 @@
 		var str = "";
 		
 		$.each(data.channel_image_list, function(key, value) {
-			var imagePath = "";
+			var image_path = "";
 			
 			if (value.WEB_URL != null) {
 				console.log(value.WEB_URL);
-				imagePath = "<td class='col-md-7'><img src='" + imageDomain + value.WEB_URL + "'></td>";
+				image_path = "<td class='col-md-7'><img src='" + imageDomain + value.WEB_URL + "'></td>";
 			} else {
 				console.log(value.WEB_URL);
-				imagePath = "<td class='col-md-7'><input type='file' name='" + value.CODE + "' id='" + value.CODE + "'></td>";
+				image_path = "<td class='col-md-7'><input type='file' name='" + value.CODE + "' id='" + value.CODE + "'></td>";
 			}
 			
 			str += "<tr>"
 					+   "<td class='col-md-1'><input class='form-control' type='text' name='code' value='" + value.CODE + "' style='border:none' readonly></input></td>"
 					+	"<td class='col-md-2'>" + value.CODE_NAME + "</td>"
-					+   imagePath
+					+   image_path
 					+	"<td class='col-md-1'>" + value.INS_DT + "</td>"
 					+	"<td class='col-md-1'>" + value.UPD_DT + "</td>"
 					+"</tr>";
@@ -171,8 +171,7 @@
 	function fn_updateChannelImage(frmObj) {
 		// imageForm
 		var comSubmit = new ComSubmit(frmObj);
-		comSubmit.addParam("s_ch_cd", document.getElementById('i_ch_cd').value);
-		comSubmit.addParam("s_ch_nm", document.getElementById('i_ch_nm').value);
+		comSubmit.addParam("content_code", document.getElementById('i_ch_cd').value);
 		comSubmit.setUrl("updateChannelImage.do");
 		comSubmit.submit();
 	}
@@ -184,7 +183,7 @@
 //		var data = channel_url_list.$('input, select'); // 됨.
 //		console.log(data);
 
-		var arrKey = "channelUrls";		
+		var arrKey = "channel_urls";		
 		var str = "{'" + arrKey + "':[";
 		$("#" + obj + " tbody tr").each(function(index, value) {
 			str += "{";

@@ -25,8 +25,8 @@ public class FileUtils {
 	public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) throws Exception{
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
 		
-		// {s_ch_nm=CH.라이어 게임.., code=[Ljava.lang.String;@27c31556, s_ch_cd=C07362}
-		//log.debug("### " + map.toString());
+		// {code=[Ljava.lang.String;@27c31556, content_code=C07362}
+		log.debug("map.toString() ### " + map.toString());
     	Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
     	
     	MultipartFile multipartFile = null;
@@ -37,7 +37,10 @@ public class FileUtils {
     	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         Map<String, Object> listMap = null;
         
-        //String boardIdx = (String)map.get("code");
+        log.debug("content_code ### " + map.get("content_code").toString());
+        
+        //String content_code = (String)map.get("content_code");
+        String content_code = "";
         
         File file = new File(filePath);
         if(file.exists() == false){
@@ -54,19 +57,19 @@ public class FileUtils {
         		originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 확장자 .png
         		storedFileName = CommonUtils.getRandomString() + originalFileExtension; // 저장이미지명(랜덤) be15bcfd27074030b6d9951d234a7ac1.png
         		
-//        		log.debug("### " + multipartFile.getName());
-//        		log.debug("### " + originalFileName);
-//        		log.debug("### " + originalFileExtension);
-//        		log.debug("### " + storedFileName);
+        		log.debug("multipartFile.getName() ### " + multipartFile.getName());
+        		log.debug("originalFileName ### " + originalFileName);
+        		log.debug("originalFileExtension ### " + originalFileExtension);
+        		log.debug("storedFileName ### " + storedFileName);
         		
         		file = new File(filePath + storedFileName);
         		multipartFile.transferTo(file);
         		
         		listMap = new HashMap<String,Object>();
-        		//listMap.put("BOARD_IDX", boardIdx);
-        		listMap.put("ORIGINAL_FILE_NAME", originalFileName);
-        		listMap.put("STORED_FILE_NAME", storedFileName);
-        		listMap.put("FILE_SIZE", multipartFile.getSize());
+        		listMap.put("content_code", content_code);
+        		listMap.put("original_file_name", originalFileName);
+        		listMap.put("stored_file_name", storedFileName);
+        		listMap.put("file_size", multipartFile.getSize());
         		list.add(listMap);
         	} else {
         		log.debug("multipartFile.isEmpty()");

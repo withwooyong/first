@@ -40,6 +40,21 @@ public class MovieServiceImpl implements MovieService {
 		return dao.detail(map);
 	}
 	
+	@Override
+	public List<Map<String, Object>> movie_image_list(Map<String, Object> map) throws Exception {
+		return dao.movie_image_list(map);
+	}
+	
+	@Override
+	public int updateMovieImage(Map<String, Object> map, HttpServletRequest request) throws Exception {		
+		int result = 0;
+		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(map, request);
+		for (int i = 0, size = list.size(); i < size; i++) {
+			//result = dao.updateMovieImage(map);
+		}
+		return result;		
+	}
+	
 	public Object insert(Map<String, Object> map, HttpServletRequest request) throws Exception {
 		return dao.insert(map); 
 	}

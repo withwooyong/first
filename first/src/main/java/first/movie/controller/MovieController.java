@@ -67,6 +67,19 @@ public class MovieController {
 		ModelAndView mv = new ModelAndView("jsonView");
 		Map<String, Object> map = service.detail(commandMap.getMap());
 		mv.addObject("map", map);
+		
+		// 이미지리스트
+		List<Map<String, Object>> movie_image_list = service.movie_image_list(commandMap.getMap());
+		mv.addObject("movie_image_list", movie_image_list);
+				
+		return mv;
+	}
+	
+	@RequestMapping(value = "/movie/updateMovieImage.do")
+	public ModelAndView updateMovieInfoImage(CommandMap commandMap, HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
+		//ModelAndView mv = new ModelAndView("redirect:/movie/movie.do");
+		service.updateMovieImage(commandMap.getMap(), request);
 		return mv;
 	}
 		
