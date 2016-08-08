@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="program_SQL">
+
+	<select id="list" parameterType="hashmap" resultType="hashmap">
+		<include refid="common.pagingPre"/>
+		SELECT /* program_SQL.list */
+               ROW_NUMBER() OVER (ORDER BY A.INS_DT DESC) RNUM
+              ,A.EPG_PGM_CD 
+              ,A.PGM_CD
+		      ,A.PGM_NM
+		      ,A.FIRST_BROAD_CD
+		      ,A.PRODUCTION
+		      ,A.HD_DEF_CD
+		      ,A.INS_DT 
+          FROM TCM_PROGRAM A
+         WHERE 1=1
+         <if test="s_pgm_cd != null and s_pgm_cd != ''">
+           AND A.PGM_CD = #{s_pgm_cd}
+         </if>  
+         <if test="s_pgm_nm != null and s_pgm_nm != ''">
+           AND A.PGM_NM LIKE '%'||#{s_pgm_nm}||'%' 	
+         </if>
+        <include refid="common.pagingPost"/> 
+	</select>
+	
+	<select id="program_list" parameterType="hashmap" resultType="hashmap">
+		<include refid="common.pagingPre"/>
+		SELECT /* program_SQL.program_list */
+               ROW_NUMBER() OVER (ORDER BY A.INS_DT DESC) RNUM
+              ,A.EPG_PGM_CD 
+              ,A.PGM_CD
+		      ,A.PGM_NM
+		      ,A.FIRST_BROAD_CD
+		      ,A.PRODUCTION
+		      ,A.HD_DEF_CD
+		      ,A.INS_DT 
+          FROM TCM_PROGRAM A
+         WHERE 1=1
+         <if test="s_pgm_cd != null and s_pgm_cd != ''">
+           AND A.PGM_CD = #{s_pgm_cd}
+         </if>  
+         <if test="s_pgm_nm != null and s_pgm_nm != ''">
+           AND A.PGM_NM LIKE '%'||#{s_pgm_nm}||'%' 	
+         </if>
+        <include refid="common.pagingPost"/> 
+	</select>
+	
+	<select id="program_detail" parameterType="hashmap" resultType="hashmap">
+        SELECT /* program_SQL.program_detail */
+               A.PGM_CD
+		      ,A.PREPIX_NM
+		      ,A.PGM_NM
+		      ,A.PGM_NM_EN      
+		      ,A.PRODUCTION		      
+		      ,A.CATE1_CD
+		      ,A.CATE2_CD
+		      ,A.FIRST_BROAD_CD		      
+		      ,A.PRODUCT_YR
+		      ,A.NATION_NM
+		      ,A.DIRECTOR
+		      ,A.BROAD_DT
+		      ,A.GRADE_CD
+		      ,A.ACTOR
+		      ,A.SYNOP
+		      ,A.KWD
+		  FROM TCM_PROGRAM A  
+		 WHERE 1=1
+		   AND A.PGM_CD = #{s_pgm_cd}
+	</select>
+	
+	<!--
+	CODE_GROUP 
+	CAIC    CA    이미지-채널
+	CAIP    CA    이미지-프로그램
+	CAIE    CA    이미지-에피소드
+	CAIM    CA    이미지-영화
+	CAIS    CA    이미지-ShortClip
+	
+	IMG_GUBUN_CD
+	CAIK    CAIK0100    채널
+	CAIK    CAIK0200    프로그램
+	CAIK    CAIK0300    에피소드
+	CAIK    CAIK0400    영화
+	CAIK    CAIK0600    ShortClip
+	 -->	
+	<select id="program_image_list" parameterType="hashmap" resultType="hashmap">
+		SELECT /* program_SQL.program_image_list*/
+		       A.CODE
+		      ,A.CODE_NAME
+		      ,B.WEB_URL
+		      ,B.INS_DT
+		      ,B.UPD_DT
+		  FROM JWORK_CODE A 
+		      ,TCM_IMG B
+		 WHERE 1=1
+		   AND A.USE_YN = 'Y'		   
+		   AND B.DEL_YN(+) = 'N'
+		   AND A.CODE = B.IMG_SECT1_CD(+)
+		   AND A.CODE_GROUP = 'CAIP'
+		   AND B.IMG_GUBUN_CD(+) = 'CAIK0200'		   
+		   AND B.MAST_CD(+) = #{s_pgm_cd}
+		 ORDER BY A.CODE_SEQ
+	</select>
+	
+	<update id="updateProgramImage" parameterType="hashmap">
+		/* program_SQL.updateProgramImage */
+		UPDATE TCM_MOVIE 
+		   SET PGM_NM = #{i_pgm_nm}
+	     WHERE PGM_CD = #{i_pgm_cd}
+	</update>
+	
+	<update id="deleteProgramImage" parameterType="hashmap">
+		/* program_SQL.deleteProgramImage */
+		UPDATE TCM_PROGRAM 
+		   SET DEL_YN = 'Y'
+	     WHERE PGM_CD = #{i_pgm_cd}
+	</update>
+	
+	<select id="episode_list" parameterType="hashmap" resultType="hashmap">
+        SELECT /* program_SQL.episode_list */
+               A.EPG_EPI_CD 
+              ,A.EPI_CD
+		      ,A.EPI_NM
+		      ,A.FREQUENCY
+		      ,A.VOD_AMT      
+		      ,A.INS_DT
+		  FROM TCM_EPISODE A  
+		 WHERE 1=1
+		   AND A.PGM_CD = #{s_pgm_cd}
+	</select>
+	
+	<select id="episode_detail" parameterType="hashmap" resultType="hashmap">
+        SELECT /* program_SQL.episode_detail */
+               A.EPG_EPI_CD 
+              ,A.EPI_CD
+		      ,A.EPI_NM
+		      ,A.FREQUENCY
+		      ,A.VOD_AMT      
+		      ,A.INS_DT
+		  FROM TCM_EPISODE A  
+		 WHERE 1=1
+		   AND A.EPI_CD = #{s_epi_cd}
+	</select>
+	
+	<!--
+	CODE_GROUP 
+	CAIC    CA    이미지-채널
+	CAIP    CA    이미지-프로그램
+	CAIE    CA    이미지-에피소드
+	CAIM    CA    이미지-영화
+	CAIS    CA    이미지-ShortClip
+	
+	IMG_GUBUN_CD
+	CAIK    CAIK0100    채널
+	CAIK    CAIK0200    프로그램
+	CAIK    CAIK0300    에피소드
+	CAIK    CAIK0400    영화
+	CAIK    CAIK0600    ShortClip
+	 -->
+	<select id="episode_image_list" parameterType="hashmap" resultType="hashmap">
+		SELECT /* program_SQL.episode_image_list*/
+		       A.CODE
+		      ,A.CODE_NAME
+		      ,B.WEB_URL
+		      ,B.INS_DT
+		      ,B.UPD_DT
+		  FROM JWORK_CODE A 
+		      ,TCM_IMG B
+		 WHERE 1=1
+		   AND A.USE_YN = 'Y'		   
+		   AND B.DEL_YN(+) = 'N'
+		   AND A.CODE = B.IMG_SECT1_CD(+)
+		   AND A.CODE_GROUP = 'CAIE'
+		   AND B.IMG_GUBUN_CD(+) = 'CAIK0300'		   
+		   AND B.MAST_CD(+) = #{s_epi_cd}
+		 ORDER BY A.CODE_SEQ
+	</select>
+	
+	<update id="updateEpisodeImage" parameterType="hashmap">
+		/* program_SQL.updateEpisodeImage */
+		UPDATE TCM_EPISODE 
+		   SET EPI_NM = #{i_epi_nm}
+	     WHERE EPI_CD = #{i_epi_cd}
+	</update>
+	
+	<update id="deleteEpisodeImage" parameterType="hashmap">
+		/* program_SQL.deleteEpisodeImage */
+		UPDATE TCM_EPISODE 
+		   SET DEL_YN = 'Y'
+	     WHERE EPI_CD = #{i_epi_cd}
+	</update>
+	
+</mapper>
