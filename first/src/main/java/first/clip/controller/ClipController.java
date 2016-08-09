@@ -24,10 +24,9 @@ public class ClipController {
 	@Resource(name = "clipService")
 	private ClipService service;
 	
-	@RequestMapping(value = "/clip/main.do")
-	public String main(CommandMap commandMap) throws Exception {
-		
-		return "/clip/main";
+	@RequestMapping(value = "/clip/clip.do")
+	public String clip(CommandMap commandMap) throws Exception {
+		return "/clip/clip";
 	}
 
 	/**

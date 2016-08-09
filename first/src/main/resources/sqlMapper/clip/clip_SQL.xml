@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="clip_SQL">
+
+	<select id="lists" parameterType="hashmap" resultType="Movie">
+		SELECT /* clip_SQL.lists */
+		       * 
+		  FROM TCM_SHORTCLIP A
+		 WHERE 1=1
+		   AND A.INS_DT > '20160404'
+	</select>
+
+	<select id="list" parameterType="hashmap" resultType="hashmap">
+		<include refid="common.pagingPre"/>      
+        SELECT /* clip_SQL.list */
+               ROW_NUMBER() OVER (ORDER BY A.INS_DT DESC) RNUM
+              ,A.SHORTCLIP_CD
+		      ,A.SHORTCLIP_NM
+		      ,A.CH_CD
+		      ,A.CH_NM
+		      ,A.MAST_CD
+		      ,A.MAST_NM
+		      ,A.EPI_CD
+		      ,A.EPI_NM
+		      ,A.FREQUENCY
+		      ,A.BROAD_DT
+		      ,A.BROAD_TIME
+		      ,A.INS_DT 
+		      ,A.DEL_YN
+		  FROM TCM_SHORTCLIP A     
+         <if test="s_clip_cd != null and s_clip_cd != ''">
+           AND A.SHORTCLIP_CD = #{s_clip_cd}
+         </if>  
+         <if test="s_clip_nm != null and s_clip_nm != ''">
+           AND A.SHORTCLIP_NM LIKE '%'||#{s_clip_nm}||'%' 	
+         </if>
+         <if test="s_epi_cd != null and s_epi_cd != ''">
+           AND A.EPI_CD = #{s_epi_cd}
+         </if>  
+         <if test="s_epi_nm != null and s_epi_nm != ''">
+           AND A.EPI_NM LIKE '%'||#{s_epi_nm}||'%' 	
+         </if>    
+         <if test="s_mast_cd != null and s_mast_cd != ''">
+           AND A.MAST_CD = #{s_mast_cd}
+         </if>  
+         <if test="s_mast_nm != null and s_mast_nm != ''">
+           AND A.MAST_NM LIKE '%'||#{s_mast_nm}||'%' 	
+         </if>
+        <include refid="common.pagingPost"/> 
+	</select>
+	
+	<select id="detail" parameterType="hashmap" resultType="hashmap">
+		SELECT /* clip_SQL.detail */
+               A.clip_CD
+              ,A.clip_NM
+              ,A.GENRE_CD
+              ,A.PRODUCTION
+              ,A.INS_DT
+              ,A.DEL_YN 
+         FROM TCM_SHORTCLIP A
+        WHERE 1=1
+          AND A.SHORTCLIP_CD = #{s_clip_cd}
+	</select>
+	
+	<!--
+	CODE_GROUP 
+	CAIC    CA    이미지-채널
+	CAIP    CA    이미지-프로그램
+	CAIE    CA    이미지-에피소드
+	CAIM    CA    이미지-영화
+	CAIS    CA    이미지-ShortClip
+	
+	IMG_GUBUN_CD
+	CAIK    CAIK0100    채널
+	CAIK    CAIK0200    프로그램
+	CAIK    CAIK0300    에피소드
+	CAIK    CAIK0400    영화
+	CAIK    CAIK0600    ShortClip
+	 -->	
+	<select id="clip_image_list" parameterType="hashmap" resultType="hashmap">
+		SELECT /* clip_SQL.clip_image_list*/
+		       A.CODE
+		      ,A.CODE_NAME
+		      ,B.WEB_URL
+		      ,B.INS_DT
+		      ,B.UPD_DT
+		  FROM JWORK_CODE A 
+		      ,TCM_IMG B
+		 WHERE 1=1
+		   AND A.USE_YN = 'Y'
+		   AND A.CODE_GROUP = 'CAIM'
+		   AND B.DEL_YN(+) = 'N'
+		   AND B.IMG_GUBUN_CD(+) = 'CAIK0400'
+		   AND A.CODE = B.IMG_SECT1_CD(+)
+		   AND B.MAST_CD(+) = #{s_clip_cd}
+		 ORDER BY A.CODE_SEQ
+	</select>
+	
+	<update id="updateMovieImage" parameterType="hashmap">
+		/* clip_SQL.updateMovieImage */
+		UPDATE TCM_SHORTCLIP 
+		   SET SHORTCLIP_NM = #{i_clip_nm}
+	     WHERE SHORTCLIP_CD = #{i_clip_cd}
+	</update>
+	
+	<update id="deleteMovieImage" parameterType="hashmap">
+		/* clip_SQL.deleteMovieImage */
+		UPDATE TCM_SHORTCLIP 
+		   SET DEL_YN = 'Y'
+	     WHERE SHORTCLIP_CD = #{i_clip_cd}
+	</update>
+	
+</mapper>

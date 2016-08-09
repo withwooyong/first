@@ -18,28 +18,28 @@ public class ClipDAO extends AbstractDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> list(Map<String, Object> map) throws Exception {
-		return (List<Map<String, Object>>) selectPagingList("clip.list", map);
+		return (List<Map<String, Object>>) selectPagingList("clip_SQL.list", map);
 	}	
 	
 	@SuppressWarnings("unchecked")
 	public List<Clip> lists(Map<String, Object> map) throws Exception {
-		return (List<Clip>) selectPagingList("clip.lists", map);
+		return (List<Clip>) selectPagingList("clip_SQL.lists", map);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> detail(Map<String, Object> map) throws Exception {
-		return (Map<String, Object>) selectOne("clip.detail", map);
+		return (Map<String, Object>) selectOne("clip_SQL.detail", map);
 	}
 	
 	public Object insert(Map<String, Object> map) throws Exception{
-		return update("clip.insert", map);
+		return update("clip_SQL.insert", map);
 	}
 	
 	public Object update(Map<String, Object> map) throws Exception{
-		return update("clip.update", map);
+		return update("clip_SQL.update", map);
 	}
 
 	public Object delete(Map<String, Object> map) throws Exception{
-		return update("clip.delete", map);
+		return update("clip_SQL.delete", map);
 	}
 }

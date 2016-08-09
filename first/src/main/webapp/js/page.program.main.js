@@ -49,6 +49,7 @@
 			});
 		}	
 		$('#program_list').dataTable();
+//		$('#program_list').dataTable().fnAdjustColumnSizing();
 	}
 	
 	// 상세
@@ -98,56 +99,41 @@
 		
 		body.append(str);
 		
-		$("a[name='EPI_NM']").on("click", function(e) {
+		$("a[name='l_epi_nm']").on("click", function(e) {
 			e.preventDefault();
-			fn_selectProgramDetail($(this));
+			fn_selectEpisodeDetail($(this));
 		});	
 		$('#episode_list').dataTable();
 	}	
-		
-	// 리스트
-	function fn_selectEpisodeListCallback(data) {
-	
-		$('#program_list tbody').empty();
-		$('#episode_list tbody').empty();
-		var body = $('#episode_list tbody');
-		
-		var str = "";
-		$.each(data, function(key, value) {
-			str += "<tr>"
-					+ "<td>" + value.EPI_CD + "</td>"
-					+ "<td><a href='#this' name='l_epi_nm'>" + value.EPI_NM	+ "</a>" 
-					+	"<input type='hidden' id='l_epi_cd' value=" + value.EPI_CD + ">"
-					+ "</td>"
-					+ "<td>" + value.FREQUENCY + "</td>" 
-					+ "<td>" + value.VOD_AMT + "</td>"
-					+ "<td>" + value.INS_DT + "</td>"
-					+ "</tr>";
-		});
-		
-		body.append(str);
-		
-		$("a[name='EPI_NM']").on("click", function(e) {
-			e.preventDefault();
-			fn_selectProgramDetail($(this));
-		});		
-	}
-	
-	function fn_selectEpisodeList(frmObj) {
-		var comAjax = new ComAjax(frmObj);			
-		comAjax.setUrl("episode_list.do");
-		comAjax.setCallback("fn_selectEpisodeListCallback");
-		comAjax.ajax();
-	}
 	
 	// 상세
-	function fn_selectEpisodeDetailCallback(obj) {
+	function fn_selectEpisodeDetail(obj) {
 	
 		var comAjax = new ComAjax();
 		comAjax.setUrl("episode_detail.do");
-		comAjax.addParam("l_epi_cd", obj.parent().find("#l_epi_cd").val());
+		comAjax.addParam("s_epi_cd", obj.parent().find("#l_epi_cd").val());
 		comAjax.setCallback("fn_selectEpisodeDetailCallback");
 		comAjax.ajax();
+	}	
+		
+	// 상세
+	function fn_selectEpisodeDetailCallback(data) {
+		
+		document.getElementById('i_epi_cd').value = data.map.EPI_CD;
+		document.getElementById("i_epi_nm").value = data.map.EPI_NM;
+		document.getElementById("i_epi_nm_en").value = data.map.EPI_NM_EN;
+		document.getElementById("i_frequency").value = data.map.FREQUENCY;
+		document.getElementById("i_vod_amt").value = data.map.VOD_AMT;
+		document.getElementById("i_cate1_cd").value = data.map.CATE1_CD;
+		document.getElementById("i_cate2_cd").value = data.map.CATE2_CD;
+		document.getElementById("i_broad_dt").value = data.map.BROAD_DT;
+		document.getElementById("i_grade_cd").value = data.map.GRADE_CD;
+		document.getElementById("i_runtime_mi").value = data.map.RUNTIME_MI;
+		document.getElementById("i_mcp_cd").value = data.map.MCP_CD;
+		document.getElementById("i_scp_cd").value = data.map.SCP_CD;
+		document.getElementById("i_actor").value = data.map.ACTOR;
+		document.getElementById("i_synop").value = data.map.SYNOP;
+		document.getElementById("i_kwd").value = data.map.KWD;
 	}
 	
 	// 저장

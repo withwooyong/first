@@ -133,12 +133,22 @@
 	
 	<select id="episode_detail" parameterType="hashmap" resultType="hashmap">
         SELECT /* program_SQL.episode_detail */
-               A.EPG_EPI_CD 
-              ,A.EPI_CD
+               A.EPG_EPI_CD
+		      ,A.EPI_CD
 		      ,A.EPI_NM
-		      ,A.FREQUENCY
-		      ,A.VOD_AMT      
-		      ,A.INS_DT
+			  ,A.EPI_NM_EN
+			  ,A.FREQUENCY
+			  ,A.VOD_AMT
+			  ,A.CATE1_CD
+			  ,A.CATE2_CD
+			  ,A.BROAD_DT
+			  ,A.GRADE_CD
+			  ,A.RUNTIME_MI
+			  ,A.MCP_CD
+			  ,A.SCP_CD
+			  ,A.ACTOR
+			  ,A.SYNOP
+			  ,A.KWD
 		  FROM TCM_EPISODE A  
 		 WHERE 1=1
 		   AND A.EPI_CD = #{s_epi_cd}
