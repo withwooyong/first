@@ -28,8 +28,7 @@
          </if>  
          <if test="s_movie_nm != null and s_movie_nm != ''">
            AND A.MOVIE_NM LIKE '%'||#{s_movie_nm}||'%' 	
-         </if>  
-           AND A.INS_DT > '20150101'
+         </if>
         <include refid="common.pagingPost"/> 
 	</select>
 	

@@ -7,8 +7,6 @@
 		SELECT /* clip_SQL.lists */
 		       * 
 		  FROM TCM_SHORTCLIP A
-		 WHERE 1=1
-		   AND A.INS_DT > '20160404'
 	</select>
 
 	<select id="list" parameterType="hashmap" resultType="hashmap">

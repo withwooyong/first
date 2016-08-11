@@ -4,10 +4,8 @@
 <mapper namespace="channel_SQL">
 	
 	<select id="channel_list" parameterType="hashmap" resultType="hashmap">
-	<include refid="common.pagingPre"/>
 		SELECT /* channel_SQL.list */
-		       ROW_NUMBER() OVER (ORDER BY A.CH_CD DESC) RNUM
-		      ,A.CH_CD
+		       A.CH_CD
 		      ,A.CH_NM
 		      ,A.CH_KIND_CD
 		      ,A.CH_NO
@@ -65,16 +63,16 @@
 		      ,B.WEB_URL
 		      ,B.INS_DT
 		      ,B.UPD_DT
-		  FROM JWORK_CODE A 
-		      ,TCM_IMG B
-		 WHERE 1=1
-		   AND A.USE_YN = 'Y'
-		   AND A.CODE_GROUP = 'CAIC'
-		   AND B.DEL_YN(+) = 'N'
-		   AND B.IMG_GUBUN_CD(+) = 'CAIK0100'
-		   AND A.CODE = B.IMG_SECT1_CD(+)
-		   AND B.MAST_CD(+) = #{s_ch_cd}
-		 ORDER BY A.CODE_SEQ
+		  FROM JWORK_CODE A
+		        LEFT OUTER JOIN
+		       TCM_IMG B ON A.CODE = B.IMG_SECT1_CD
+		                AND B.DEL_YN = 'N'
+		                AND B.IMG_GUBUN_CD = 'CAIK0100'
+		                AND B.MAST_CD = #{s_ch_cd}
+		WHERE 1=1 
+		  AND A.USE_YN = 'Y' 
+		  AND A.CODE_GROUP = 'CAIC'
+		ORDER BY A.CODE_SEQ
 	</select>
 	
 	<select id="channel_url_list" parameterType="hashmap" resultType="hashmap">
@@ -83,17 +81,14 @@
 			  ,A.CODE_NAME
 			  ,B.BROAD_URL
 			  ,B.PREVIEW_URL
-<!-- 			  ,B.MULTI_VIEW_URL -->
 			  ,B.AUDIO_ONLY_URL
 			  ,B.DEL_YN   
 		  FROM JWORK_CODE A
-		      ,TCM_CHANNEL_URL B
+                 LEFT outer JOIN 
+		      TCM_CHANNEL_URL B ON A.CODE = B.SCR_CD AND B.SERV_KEY IN ('023','100','200','523') AND B.CH_CD = #{s_ch_cd}
 		 WHERE 1=1
 		   AND A.USE_YN = 'Y'
 		   AND A.CODE_GROUP = 'CSSD'
-		   AND B.SERV_KEY(+) IN ('023','100','200','523')  
-		   AND A.CODE = B.SCR_CD(+)
-		   AND B.CH_CD(+) = #{s_ch_cd}
 	</select>	
 	
 	<update id="updateChannel" parameterType="hashmap">
@@ -116,53 +111,14 @@
 		   SET CH_NM = #{s_ch_nm}	
 		 WHERE CH_CD = #{s_ch_cd}
 	</update>
+	
 	<update id="updateChannelUrl" parameterType="hashmap">
 		/* channel_SQL.updateChannelUrl */
-        MERGE INTO TCM_CHANNEL_URL A    
-             USING (SELECT ${s_ch_cd} AS CH_CD  
-                          ,${scr_cd} AS SCR_CD
-                          ,'0100' AS SERV_KEY
-                          ,${broad_url} AS BROAD_URL
-                          ,${preview_url} AS PREVIEW_URL
-                          ,${audio_only_url} AS AUDIO_ONLY_URL
-                          ,${del_yn} AS DEL_YN
-                          ,${user_id} AS USER_ID
-                          ,TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS') AS DATETIME      
-                      FROM DUAL
-                   ) B 
-               ON (        
-                    A.CH_CD = B.CH_CD
-                AND A.SCR_CD = B.SCR_CD
-                  )
-       WHEN MATCHED THEN
-           UPDATE SET A.SERV_KEY = B.SERV_KEY
-                     ,A.BROAD_URL = B.BROAD_URL
-                     ,A.PREVIEW_URL = B.PREVIEW_URL
-                     ,A.AUDIO_ONLY_URL = B.AUDIO_ONLY_URL
-                     ,A.DEL_YN = B.DEL_YN
-                     ,A.UPD_ID      = B.USER_ID
-                     ,A.UPD_DT      = B.DATETIME
-       WHEN NOT MATCHED THEN
-           INSERT (A.CH_CD
-                  ,A.SCR_CD
-                  ,A.SERV_KEY
-                  ,A.BROAD_URL
-                  ,A.PREVIEW_URL
-                  ,A.AUDIO_ONLY_URL
-                  ,A.DEL_YN
-                  ,A.INS_ID
-                  ,A.INS_DT
-           ) VALUES ( 
-                   B.CH_CD
-                  ,B.SCR_CD
-                  ,B.SERV_KEY
-                  ,B.BROAD_URL
-                  ,B.PREVIEW_URL
-                  ,B.AUDIO_ONLY_URL
-                  ,B.DEL_YN
-                  ,B.USER_ID
-                  ,B.DATETIME
-           )
+        INSERT INTO TCM_CHANNEL_URL(CH_CD, SCR_CD, SERV_KEY, BROAD_URL, PREVIEW_URL, AUDIO_ONLY_URL, DEL_YN, INS_ID) 
+             VALUES (${s_ch_cd}, ${scr_cd}, '0100', ${broad_url}, ${preview_url}, ${audio_only_url}, ${del_yn}, ${user_id}) 
+       		ON DUPLICATE KEY 
+             UPDATE SCR_CD = ${scr_cd}, SERV_KEY = '0100', BROAD_URL = ${broad_url}, PREVIEW_URL = ${preview_url}
+                   ,AUDIO_ONLY_URL = ${audio_only_url}, DEL_YN = ${del_yn}, UPD_ID = ${user_id}, UPD_DT = NOW()
 	</update>
 	
 	<insert id="insertChannel" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">

@@ -165,6 +165,28 @@
 			<version>1.4</version>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>6.0.3</version>
+		</dependency>
+		
+	    <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+		<dependency>
+		    <groupId>joda-time</groupId>
+		    <artifactId>joda-time</artifactId>
+		    <version>2.9.4</version>
+		</dependency>		        
+ 
+  		<!-- Jadira Usertype Core (for Joda Time, Joda Money, Libphonenum And JDK Types With Hibernate) » 5.0.0.GA -->
+<!--         https://mvnrepository.com/artifact/org.jadira.usertype/usertype.core -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>org.jadira.usertype</groupId> -->
+<!-- 		    <artifactId>usertype.core</artifactId> -->
+<!-- 		    <version>5.0.0.GA</version> -->
+<!-- 		</dependency> -->
+		
 		<!-- Oracle -->
 <!-- 		<dependency> -->
 <!-- 			<groupId>com.oracle</groupId> -->

@@ -6,26 +6,34 @@
 						http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
 						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
-	<bean id="webMaindataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    	<property name="driverClassName" value="#{jdbcConfig['jdbc.ufrt.driver']}" />
-        <property name="url" value="#{jdbcConfig['jdbc.ufrt.url']}" />
-        <property name="username" value="#{jdbcConfig['jdbc.ufrt.username']}" />
-        <property name="password" value="#{jdbcConfig['jdbc.ufrt.password']}" />
-        <property name="initialSize" value="#{jdbcConfig['jdbc.ufrt.initialSize']}" />
-        <property name="maxActive" value="#{jdbcConfig['jdbc.ufrt.maxActive']}" />
-        <property name="maxIdle" value="#{jdbcConfig['jdbc.ufrt.maxIdle']}" />
-        <property name="minIdle" value="#{jdbcConfig['jdbc.ufrt.minIdle']}" />
-        <property name="maxWait" value="#{jdbcConfig['jdbc.ufrt.maxWait']}" />
-        <property name="testWhileIdle" value="#{jdbcConfig['jdbc.ufrt.testWhileIdle']}" />
-        <property name="testOnReturn" value="#{jdbcConfig['jdbc.ufrt.testOnReturn']}" />
-        <property name="testOnBorrow" value="#{jdbcConfig['jdbc.ufrt.testOnBorrow']}" />
-        <property name="validationQuery" value="#{jdbcConfig['jdbc.ufrt.validationQuery']}" />
-        <property name="timeBetweenEvictionRunsMillis" value="#{jdbcConfig['jdbc.ufrt.timeBetweenEvictionRunsMillis']}" />
-        <property name="minEvictableIdleTimeMillis" value="#{jdbcConfig['jdbc.ufrt.minEvictableIdleTimeMillis']}" />
-        <property name="removeAbandonedTimeout" value="#{jdbcConfig['jdbc.ufrt.removeAbandonedTimeout']}" />
-        <property name="removeAbandoned" value="#{jdbcConfig['jdbc.ufrt.removeAbandoned']}" />
-        <property name="logAbandoned" value="#{jdbcConfig['jdbc.ufrt.logAbandoned']}" />
-    </bean>    
+<!-- 	<bean id="webMaindataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> -->
+<!--     	<property name="driverClassName" value="#{jdbcConfig['jdbc.ufrt.driver']}" /> -->
+<!--         <property name="url" value="#{jdbcConfig['jdbc.ufrt.url']}" /> -->
+<!--         <property name="username" value="#{jdbcConfig['jdbc.ufrt.username']}" /> -->
+<!--         <property name="password" value="#{jdbcConfig['jdbc.ufrt.password']}" /> -->
+<!--         <property name="initialSize" value="#{jdbcConfig['jdbc.ufrt.initialSize']}" /> -->
+<!--         <property name="maxActive" value="#{jdbcConfig['jdbc.ufrt.maxActive']}" /> -->
+<!--         <property name="maxIdle" value="#{jdbcConfig['jdbc.ufrt.maxIdle']}" /> -->
+<!--         <property name="minIdle" value="#{jdbcConfig['jdbc.ufrt.minIdle']}" /> -->
+<!--         <property name="maxWait" value="#{jdbcConfig['jdbc.ufrt.maxWait']}" /> -->
+<!--         <property name="testWhileIdle" value="#{jdbcConfig['jdbc.ufrt.testWhileIdle']}" /> -->
+<!--         <property name="testOnReturn" value="#{jdbcConfig['jdbc.ufrt.testOnReturn']}" /> -->
+<!--         <property name="testOnBorrow" value="#{jdbcConfig['jdbc.ufrt.testOnBorrow']}" /> -->
+<!--         <property name="validationQuery" value="#{jdbcConfig['jdbc.ufrt.validationQuery']}" /> -->
+<!--         <property name="timeBetweenEvictionRunsMillis" value="#{jdbcConfig['jdbc.ufrt.timeBetweenEvictionRunsMillis']}" /> -->
+<!--         <property name="minEvictableIdleTimeMillis" value="#{jdbcConfig['jdbc.ufrt.minEvictableIdleTimeMillis']}" /> -->
+<!--         <property name="removeAbandonedTimeout" value="#{jdbcConfig['jdbc.ufrt.removeAbandonedTimeout']}" /> -->
+<!--         <property name="removeAbandoned" value="#{jdbcConfig['jdbc.ufrt.removeAbandoned']}" /> -->
+<!--         <property name="logAbandoned" value="#{jdbcConfig['jdbc.ufrt.logAbandoned']}" /> -->
+<!--     </bean>    -->
+    
+    <bean id="webMaindataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="#{jdbcConfig['spring.datasource.driverClassName']}" />
+        <property name="url" value="#{jdbcConfig['spring.datasource.url']}" />
+<!--         jdbc:mysql://localhost/db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC -->
+        <property name="username" value="#{jdbcConfig['spring.datasource.username']}" />
+        <property name="password" value="#{jdbcConfig['spring.datasource.password']}" />
+	</bean> 
     
     <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
 		<constructor-arg ref="webMaindataSource" />
