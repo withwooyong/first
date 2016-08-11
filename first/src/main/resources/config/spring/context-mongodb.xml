@@ -4,7 +4,7 @@
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						   http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd ">
- 
+  
     <mongo:mongo id="mongo" host="#{jdbcConfig['mongodb.host']}" port="#{jdbcConfig['mongodb.port']}" >
         <mongo:options  connections-per-host="100" threads-allowed-to-block-for-connection-multiplier="80"
                         connect-timeout="100000" max-wait-time="150000" socket-timeout="150000"

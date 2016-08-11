@@ -111,7 +111,7 @@
 		   SET CH_NM = #{s_ch_nm}	
 		 WHERE CH_CD = #{s_ch_cd}
 	</update>
-	
+		
 	<update id="updateChannelUrl" parameterType="hashmap">
 		/* channel_SQL.updateChannelUrl */
         INSERT INTO TCM_CHANNEL_URL(CH_CD, SCR_CD, SERV_KEY, BROAD_URL, PREVIEW_URL, AUDIO_ONLY_URL, DEL_YN, INS_ID) 

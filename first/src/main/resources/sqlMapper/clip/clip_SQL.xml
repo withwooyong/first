@@ -9,6 +9,7 @@
 		  FROM TCM_SHORTCLIP A
 	</select>
 
+
 	<select id="list" parameterType="hashmap" resultType="hashmap">
 		<include refid="common.pagingPre"/>      
         SELECT /* clip_SQL.list */

@@ -11,6 +11,5 @@
 		 WHERE USE_YN = 'Y' 
 		   AND CODE_GROUP = #{code_group}
 	</select>
-	
-	
+		
 </mapper>
