@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="code_Oracle">
+	
+	<select id="selectJworkCode" parameterType="hashmap" resultType="hashmap">
+	 	SELECT /* code_SQL.selectJworkCode */
+	 	       CODE
+	 	      ,CODE_NAME 
+		  FROM JWORK_CODE 
+		 WHERE USE_YN = 'Y' 
+		   AND CODE_GROUP = #{code_group}
+	</select>
+	
+	
+</mapper>
